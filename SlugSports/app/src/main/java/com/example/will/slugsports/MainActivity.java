@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity {
     private String chosenSp = "";
     private String chosenLoc = "";
     private String chosenDay = "";
+    private String chosenCriteria = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 chosenSp = spList.get(position);
+                chosenCriteria = chosenSp;
                 Toast toast = Toast.makeText(MainActivity.this, chosenSp, Toast.LENGTH_SHORT);
                 toast.show();
                 currentList = "Locations";
                 populateListView(locList, "Locations");
+                updateChosenView();
             }
         });
         myListView.setAdapter(arrayAdapter);
@@ -86,6 +89,7 @@ public class MainActivity extends ActionBarActivity {
             default:
                 break;
         }
+        updateChosenView();
     }
 
     @Override
@@ -127,6 +131,7 @@ public class MainActivity extends ActionBarActivity {
                     case "Sports":
                         chosenSp =  list2.get(position);
                         currentList = "Locations";
+                        chosenCriteria = list2.get(position);
                         populateListView(locList, "Locations");
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
@@ -134,18 +139,20 @@ public class MainActivity extends ActionBarActivity {
                     case "Locations":
                         chosenLoc = list2.get(position);
                         currentList = "Days";
+                        chosenCriteria = chosenSp + " : " + list2.get(position);
                         populateListView(dayList, "Days");
                         toast = Toast.makeText(MainActivity.this, chosenSp + " : " + list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
                         break;
                     case "Days":
                         chosenDay = list2.get(position);
+                        chosenCriteria = chosenSp + " : " + chosenLoc + " : " + list2.get(position);
                         toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
                     default:
                         break;
                 }
-
+                updateChosenView();
                 Log.i(LOG_TAG, currentList + " : ");
             }
         });
@@ -153,8 +160,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void changeTitle(){
-        TextView temp = (TextView) findViewById(R.id.textView);
+        TextView temp = (TextView) findViewById(R.id.titleView);
         temp.setText(currentList + " List");
+    }
+
+    private void updateChosenView(){
+        TextView temp = (TextView) findViewById(R.id.textView2);
+        temp.setText(chosenCriteria);
     }
 
     //Populate spList with the available sports
