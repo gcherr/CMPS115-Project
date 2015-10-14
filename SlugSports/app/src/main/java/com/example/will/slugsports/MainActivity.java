@@ -24,6 +24,9 @@ public class MainActivity extends ActionBarActivity {
     private ListView myListView;
     private ArrayAdapter<String> arrayAdapter;
     private String LOG_TAG = "DEBUG: ";
+    private String chosenSp = "";
+    private String chosenLoc = "";
+    private String chosenDay = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,8 @@ public class MainActivity extends ActionBarActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast toast = Toast.makeText(MainActivity.this, spList.get(position), Toast.LENGTH_SHORT);
+                chosenSp = spList.get(position);
+                Toast toast = Toast.makeText(MainActivity.this, chosenSp, Toast.LENGTH_SHORT);
                 toast.show();
                 currentList = "Locations";
                 populateListView(locList, "Locations");
@@ -106,6 +110,8 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //populate list with the given criteria
+    //also adds a listener to link to the next set of criteria (if available)
     private void populateListView(ArrayList<String> list, String nextList){
         final ArrayList<String> list2 = list;
         currentList = nextList;
@@ -116,20 +122,30 @@ public class MainActivity extends ActionBarActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-                toast.show();
+        Toast toast;
                 switch(currentList){
                     case "Sports":
+                        chosenSp =  list2.get(position);
                         currentList = "Locations";
                         populateListView(locList, "Locations");
+                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
+                        toast.show();
                         break;
                     case "Locations":
+                        chosenLoc = list2.get(position);
                         currentList = "Days";
                         populateListView(dayList, "Days");
+                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast.show();
                         break;
+                    case "Days":
+                        chosenDay = list2.get(position);
+                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast.show();
                     default:
                         break;
                 }
+
                 Log.i(LOG_TAG, currentList + " : ");
             }
         });
