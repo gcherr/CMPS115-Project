@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
-    private ArrayList<String> spList, locList, dayList;
+    private ArrayList<String> spList, locList, dayList, hourList;
     private String currentList;
     private ListView myListView;
     private ArrayAdapter<String> arrayAdapter;
@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity {
     private String chosenSp = "";
     private String chosenLoc = "";
     private String chosenDay = "";
+    private String chosenHour ="";
     private String chosenCriteria = "";
 
     @Override
@@ -36,9 +37,11 @@ public class MainActivity extends ActionBarActivity {
         spList = new ArrayList<String>();
         locList = new ArrayList<String>();
         dayList = new ArrayList<String>();
+        hourList = new ArrayList<String>();
         populateSports(spList);
         populateLocs(locList);
         populateDays(dayList);
+        populateHours(hourList);
         arrayAdapter = new ArrayAdapter<String>(
             this, android.R.layout.simple_list_item_1, spList
         );
@@ -77,6 +80,10 @@ public class MainActivity extends ActionBarActivity {
                 chosenCriteria = parts[0];
                 updateChosenView();
                 populateListView(locList, "Locations");
+                break;
+            case "Hours":
+                //currentList = "Days";
+                populateListView(dayList,"Days");
                 break;
             default:
                 break;
@@ -136,9 +143,21 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case "Days":
                         chosenDay = list2.get(position);
+                        currentList = "Hours";
                         chosenCriteria = chosenSp + " : " + chosenLoc + " : " + list2.get(position);
-                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
+
+                        //toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
+
+                        populateListView(hourList, "Hours");
+                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + list2.get(position), Toast.LENGTH_SHORT);
+
                         toast.show();
+                    case "Hours":
+                        chosenHour = list2.get(position);
+                        chosenCriteria = chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position);
+                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast.show();
+                        break;
                     default:
                         break;
                 }
@@ -162,26 +181,29 @@ public class MainActivity extends ActionBarActivity {
     //Populate spList with the available sports
     private void populateSports(ArrayList<String> spList){
         spList.add("Baseball");
-        spList.add("Football");
-        spList.add("Soccer");
         spList.add("Basketball");
-        spList.add("Hockey");
+        spList.add("Football");
         spList.add("Frisbee Golf");
-        spList.add("Tennis");
+        spList.add("Futsal");
+        spList.add("Racket Ball");
+        spList.add("Soccer");
         spList.add("Swimming");
+        spList.add("Tennis");
         spList.add("Weightlifting");
-        spList.add("Boxing");
-        spList.add("Golf");
     }
 
     //Populate locList with the available locations
     private void populateLocs(ArrayList<String> locList){
+        locList.add("College 8 Basketball Courts");
+        locList.add("College 8 Tennis Courts");
+        locList.add("OPERS Basketball Courts");
         locList.add("OPERS Field");
-        locList.add("East Gym");
-        locList.add("Tennis Courts");
-        locList.add("Basketball Courts");
+        locList.add("OPERS Gym");
+        locList.add("OPERS Pool");
+        locList.add("OPERS Tennis Courts");
     }
 
+    //Populate dayList with the available days
     private void populateDays(ArrayList<String> dayList){
         dayList.add("Sunday");
         dayList.add("Monday");
@@ -191,5 +213,28 @@ public class MainActivity extends ActionBarActivity {
         dayList.add("Friday");
         dayList.add("Saturday");
 
+    }
+
+    //Populate hourList with the available hours
+    private void populateHours(ArrayList<String> hourList){
+        hourList.add("6 am");
+        hourList.add("7 am");
+        hourList.add("8 am");
+        hourList.add("9 am");
+        hourList.add("10 am");
+        hourList.add("11 am");
+        hourList.add("12 pm");
+        hourList.add("12 am");
+        hourList.add("1 pm");
+        hourList.add("2 pm");
+        hourList.add("3 pm");
+        hourList.add("4 pm");
+        hourList.add("5 pm");
+        hourList.add("6 pm");
+        hourList.add("7 pm");
+        hourList.add("8 pm");
+        hourList.add("9 pm");
+        hourList.add("10 pm");
+        hourList.add("11 pm");
     }
 }
