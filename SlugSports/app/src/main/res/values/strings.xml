@@ -8,4 +8,11 @@
     <string name="create_text">Create Game</string>
     <string name="available">Available Games</string>
     <string name="title_activity_found_games">FoundGames</string>
+
+    <string name="event_name">Event name:</string>
+    <string name="preferred_num">Preferred number of players:</string>
+    <string name="description">Description:</string>
+    <string name="enter_name">Your name:</string>
+    <string name="event_creator">Create Your Event!!!</string>
+    <string name="create">Create</string>
 </resources>
