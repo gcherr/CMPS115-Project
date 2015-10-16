@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
         myListView = (ListView) findViewById(R.id.listView);
         //Make each list element clickable
         populateListView(spList, "Sports");
-
+/*
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
                 updateChosenView();
             }
         });
+*/
         myListView.setAdapter(arrayAdapter);
 
     }
@@ -80,10 +81,15 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case "Locations":
                 //currentList = "Sports";
+                chosenCriteria = "";
+                updateChosenView();
                 populateListView(spList, "Sports");
                 break;
             case "Days":
                 //currentList = "Locations";
+                String[] parts = chosenCriteria.split(":");
+                chosenCriteria = parts[0];
+                updateChosenView();
                 populateListView(locList, "Locations");
                 break;
             default:
@@ -141,13 +147,13 @@ public class MainActivity extends ActionBarActivity {
                         currentList = "Days";
                         chosenCriteria = chosenSp + " : " + list2.get(position);
                         populateListView(dayList, "Days");
-                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
                         break;
                     case "Days":
                         chosenDay = list2.get(position);
                         chosenCriteria = chosenSp + " : " + chosenLoc + " : " + list2.get(position);
-                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
                     default:
                         break;
