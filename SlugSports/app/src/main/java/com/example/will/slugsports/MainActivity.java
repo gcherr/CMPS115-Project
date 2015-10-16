@@ -46,20 +46,6 @@ public class MainActivity extends ActionBarActivity {
         myListView = (ListView) findViewById(R.id.listView);
         //Make each list element clickable
         populateListView(spList, "Sports");
-/*
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                chosenSp = spList.get(position);
-                chosenCriteria = chosenSp;
-                Toast toast = Toast.makeText(MainActivity.this, chosenSp, Toast.LENGTH_SHORT);
-                toast.show();
-                currentList = "Locations";
-                populateListView(locList, "Locations");
-                updateChosenView();
-            }
-        });
-*/
         myListView.setAdapter(arrayAdapter);
 
     }
@@ -125,9 +111,7 @@ public class MainActivity extends ActionBarActivity {
     private void populateListView(ArrayList<String> list, String nextList){
         final ArrayList<String> list2 = list;
         currentList = nextList;
-        arrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, list2
-        );
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list2);
         changeTitle();
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
