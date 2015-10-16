@@ -21,6 +21,8 @@
             android:label="@string/title_activity_found_games"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity android:name=".createEvent" >
+        </activity>
     </application>
 
 </manifest>

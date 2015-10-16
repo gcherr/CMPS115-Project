@@ -2,6 +2,7 @@ package com.example.will.slugsports;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,8 +84,12 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case "Hours":
                 //currentList = "Days";
+                String[] parts2 = chosenCriteria.split(":");
+                chosenCriteria = parts2[0] + ":" + parts2[1];
+                updateChosenView();
                 populateListView(dayList,"Days");
                 break;
+
             default:
                 break;
         }
@@ -149,14 +154,18 @@ public class MainActivity extends ActionBarActivity {
                         //toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
 
                         populateListView(hourList, "Hours");
-                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
 
                         toast.show();
+                        break;
                     case "Hours":
                         chosenHour = list2.get(position);
                         chosenCriteria = chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position);
-                        toast = Toast.makeText(MainActivity.this, chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position), Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
+                        Intent intent = new Intent(MainActivity.this, FoundGames.class);
+
+                        startActivity(intent);
                         break;
                     default:
                         break;
