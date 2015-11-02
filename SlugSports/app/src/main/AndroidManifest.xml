@@ -26,6 +26,11 @@
         <activity android:name=".createEvent" >
         </activity>
         <activity android:name=".LoginActivity" >
+
+        </activity>
+        <activity
+            android:name=".CalendarViewActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
