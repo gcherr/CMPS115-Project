@@ -47,6 +47,7 @@ public class LoginTest extends Activity {
     ProgressDialog mProgress;
     //Added for slugsports
     Button nextActivity;
+    Button signIn;
     String calSource = "oh9rhquvavljf8f474qdsvts8s@group.calendar.google.com";
     //
 
@@ -86,6 +87,19 @@ public class LoginTest extends Activity {
         nextActivity = new Button(this);
         nextActivity.setText("Next Activity");
         nextActivity.setVisibility(View.GONE);
+
+        signIn = new Button(this);
+        signIn.setText("Sign into Google Account");
+        signIn.setVisibility(View.GONE);
+
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseAccount();
+            }
+        });
+
+        activityLayout.addView(signIn);
         activityLayout.addView(nextActivity);
         //
 
@@ -95,13 +109,15 @@ public class LoginTest extends Activity {
         setContentView(activityLayout);
 
         // Initialize credentials and service object.
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+
+
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-    }
 
+    }
 
     /**
      * Called whenever this activity is pushed to the foreground, such as after
@@ -111,7 +127,15 @@ public class LoginTest extends Activity {
     protected void onResume() {
         super.onResume();
         if (isGooglePlayServicesAvailable()) {
-            refreshResults();
+            //refreshResults();
+            
+            // If the user is signed in, display the results
+            // else only show the button for signing in
+            // Added for Slug Sports
+            if(mCredential.getSelectedAccountName() != null)
+                refreshResults();
+            signIn.setVisibility(View.VISIBLE);
+            //
         } else {
             mOutputText.setText("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
@@ -180,6 +204,15 @@ public class LoginTest extends Activity {
                 mOutputText.setText("No network connection available.");
             }
         }
+    }
+
+    /**
+     * calls the MakeRequestTask activity
+     * Made into its own function so that it can be called on button press.
+     * Added for SlugSports
+     */
+    private void startMakeRequestTask(){
+        new MakeRequestTask(mCredential).execute();
     }
 
     /**
