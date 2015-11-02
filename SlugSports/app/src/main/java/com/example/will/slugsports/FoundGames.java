@@ -9,12 +9,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
+
 
 public class FoundGames extends AppCompatActivity {
 
+    private ArrayAdapter<String> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //
+        Bundle extras = getIntent().getExtras();
+        //
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_found_games);
@@ -30,6 +39,17 @@ public class FoundGames extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
+
+        /*
+
+
+        if (extras == null || extras.size() == 0) {
+
+        } else {
+            ListView myListView = (ListView) findViewById(R.id.listView);
+            myListView.setAdapter(arrayAdapter);
+        }
         */
     }
 

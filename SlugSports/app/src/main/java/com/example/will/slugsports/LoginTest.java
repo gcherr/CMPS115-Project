@@ -30,7 +30,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,10 +41,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoginActivity extends Activity {
+public class LoginTest extends Activity {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     ProgressDialog mProgress;
+    //Added for slugsports
+    Button nextActivity;
+    //
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -75,6 +80,13 @@ public class LoginActivity extends Activity {
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
         activityLayout.addView(mOutputText);
+
+        //Added for slugsports
+        nextActivity = new Button(this);
+        nextActivity.setText("Next Activity");
+        nextActivity.setVisibility(View.GONE);
+        activityLayout.addView(nextActivity);
+        //
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Calendar API ...");
@@ -219,7 +231,7 @@ public class LoginActivity extends Activity {
             final int connectionStatusCode) {
         Dialog dialog = GooglePlayServicesUtil.getErrorDialog(
                 connectionStatusCode,
-                LoginActivity.this,
+                LoginTest.this,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
@@ -288,7 +300,6 @@ public class LoginActivity extends Activity {
             return eventStrings;
         }
 
-
         @Override
         protected void onPreExecute() {
             mOutputText.setText("");
@@ -300,9 +311,22 @@ public class LoginActivity extends Activity {
             mProgress.hide();
             if (output == null || output.size() == 0) {
                 mOutputText.setText("No results returned.");
+                //added for slugsports
+                nextActivity.setVisibility(View.GONE);
+                //
             } else {
                 output.add(0, "Data retrieved using the Google Calendar API:");
                 mOutputText.setText(TextUtils.join("\n", output));
+                //added for slugsports
+                nextActivity.setVisibility(View.VISIBLE);
+
+                ArrayList<String> list_out = new ArrayList<>();
+                list_out.addAll(list_out);
+                //Intent intent = new Intent(LoginTest.this, FoundGames.class);
+                //intent.putStringArrayListExtra("output", list_out);
+
+                //startActivity(intent);
+                //
             }
         }
 
@@ -317,7 +341,7 @@ public class LoginActivity extends Activity {
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            LoginActivity.REQUEST_AUTHORIZATION);
+                            LoginTest.REQUEST_AUTHORIZATION);
                 } else {
                     mOutputText.setText("The following error occurred:\n"
                             + mLastError.getMessage());
