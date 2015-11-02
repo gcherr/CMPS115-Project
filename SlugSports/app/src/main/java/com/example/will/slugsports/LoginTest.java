@@ -17,6 +17,7 @@ import com.google.api.client.util.DateTime;
 
 import com.google.api.services.calendar.model.*;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
@@ -35,10 +36,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LoginTest extends Activity {
@@ -128,7 +131,7 @@ public class LoginTest extends Activity {
         super.onResume();
         if (isGooglePlayServicesAvailable()) {
             //refreshResults();
-            
+
             // If the user is signed in, display the results
             // else only show the button for signing in
             // Added for Slug Sports
@@ -199,11 +202,46 @@ public class LoginTest extends Activity {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
-                new MakeRequestTask(mCredential).execute();
+                //new MakeRequestTask(mCredential).execute();
+                //
+                if(getUsername() == null)
+                    Toast.makeText(LoginTest.this, "No Username", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(LoginTest.this, getUsername(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginTest.this, MainActivity.class);
+                startActivity(intent);
+                //
             } else {
                 mOutputText.setText("No network connection available.");
             }
         }
+    }
+
+    /**
+     * Attempt to get the currently logged in user's username
+     * Added for SlugSports
+     */
+    public String getUsername() {
+        AccountManager manager = AccountManager.get(this);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        List<String> possibleEmails = new LinkedList<String>();
+
+        for (Account account : accounts) {
+            // TODO: Check possibleEmail against an email regex or treat
+            // account.name as an email address only for certain account.type
+            // values.
+            possibleEmails.add(account.name);
+        }
+
+        if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
+            String email = possibleEmails.get(0);
+            String[] parts = email.split("@");
+            if (parts.length > 0 && parts[0] != null)
+                return parts[0];
+            else
+                return null;
+        } else
+            return null;
     }
 
     /**
