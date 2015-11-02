@@ -1,73 +1,91 @@
 package com.example.will.slugsports;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
-import android.view.View;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
 
-import java.util.Calendar;
 
-
-/**
- * Created by SeanMendenhall on 11/1/2015.
- */
-public class CalendarViewActivity extends FragmentActivity {
+public class CalendarViewActivity extends FragmentActivity
+        implements TimePickerFragment.OnTimeSelectedListener{
 
     CalendarView calendar;
 
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
+    int dayOfEvent;
+    int monthOfEvent;
+    int yearOfEvent;
 
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+    Long date;
 
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
+    public void showTimePickerDialog() {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
 
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-            System.out.println(hourOfDay + ":" + minute);
-        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_calendar);
-        initializeCalendar();
 
+        initializeCalendar();
     }
 
     public void initializeCalendar(){
 
-        calendar = (CalendarView) findViewById(R.id.calendar);
+        calendar = (CalendarView) findViewById(R.id.calendarView);
+
+        // sets whether to show the week number.
+        calendar.setShowWeekNumber(false);
+
+        date = calendar.getDate();
+
+
+
 
         calendar.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-                showTimePickerDialog();
+                if(calendar.getDate() != date){
+                    date = calendar.getDate();
+
+                    dayOfEvent = day;
+                    monthOfEvent = month;
+                    yearOfEvent = year;
+
+                    //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+
+                    showTimePickerDialog();
+                }
             }
         });
     }
 
-    public void showTimePickerDialog() {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
+    public void onTimeSelected(int hour, int minute){
+        Intent intent = new Intent(CalendarViewActivity.this, createEvent.class);
+        intent.putExtra("day", dayOfEvent);
+        intent.putExtra("month", monthOfEvent);
+        intent.putExtra("year", yearOfEvent);
+        intent.putExtra("minute", minute);
+
+        if(hour > 12){
+            intent.putExtra("hour", hour % 12);
+            intent.putExtra("AM?", false);
+        }
+        else {
+            intent.putExtra("hour", hour);
+            intent.putExtra("AM?", true);
+        }
+
+        startActivity(intent);
     }
+
+
+
+
 
 
 }
