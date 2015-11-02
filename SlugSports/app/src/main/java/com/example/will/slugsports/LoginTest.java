@@ -47,6 +47,7 @@ public class LoginTest extends Activity {
     ProgressDialog mProgress;
     //Added for slugsports
     Button nextActivity;
+    String calSource = "oh9rhquvavljf8f474qdsvts8s@group.calendar.google.com";
     //
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -277,7 +278,10 @@ public class LoginTest extends Activity {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             List<String> eventStrings = new ArrayList<String>();
-            Events events = mService.events().list("primary")
+
+
+            //Events events = mService.events().list("primary")
+            Events events = mService.events().list(calSource)
                     .setMaxResults(10)
                     .setTimeMin(now)
                     .setOrderBy("startTime")
