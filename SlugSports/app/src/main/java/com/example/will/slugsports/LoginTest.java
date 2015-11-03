@@ -17,6 +17,7 @@ import com.google.api.client.util.DateTime;
 
 import com.google.api.services.calendar.model.*;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
@@ -35,10 +36,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LoginTest extends Activity {
@@ -47,6 +50,8 @@ public class LoginTest extends Activity {
     ProgressDialog mProgress;
     //Added for slugsports
     Button nextActivity;
+    Button signIn;
+    String calSource = "oh9rhquvavljf8f474qdsvts8s@group.calendar.google.com";
     //
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -85,6 +90,19 @@ public class LoginTest extends Activity {
         nextActivity = new Button(this);
         nextActivity.setText("Next Activity");
         nextActivity.setVisibility(View.GONE);
+
+        signIn = new Button(this);
+        signIn.setText("Sign into Google Account");
+        signIn.setVisibility(View.GONE);
+
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseAccount();
+            }
+        });
+
+        activityLayout.addView(signIn);
         activityLayout.addView(nextActivity);
         //
 
@@ -94,13 +112,15 @@ public class LoginTest extends Activity {
         setContentView(activityLayout);
 
         // Initialize credentials and service object.
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+
+
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-    }
 
+    }
 
     /**
      * Called whenever this activity is pushed to the foreground, such as after
@@ -110,7 +130,15 @@ public class LoginTest extends Activity {
     protected void onResume() {
         super.onResume();
         if (isGooglePlayServicesAvailable()) {
-            refreshResults();
+            //refreshResults();
+
+            // If the user is signed in, display the results
+            // else only show the button for signing in
+            // Added for Slug Sports
+            if(mCredential.getSelectedAccountName() != null)
+                refreshResults();
+            signIn.setVisibility(View.VISIBLE);
+            //
         } else {
             mOutputText.setText("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
@@ -174,11 +202,55 @@ public class LoginTest extends Activity {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
-                new MakeRequestTask(mCredential).execute();
+                //new MakeRequestTask(mCredential).execute();
+                //
+                if(getUsername() == null)
+                    Toast.makeText(LoginTest.this, "No Username", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(LoginTest.this, getUsername(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginTest.this, MainActivity.class);
+                startActivity(intent);
+                //
             } else {
                 mOutputText.setText("No network connection available.");
             }
         }
+    }
+
+    /**
+     * Attempt to get the currently logged in user's username
+     * Added for SlugSports
+     */
+    public String getUsername() {
+        AccountManager manager = AccountManager.get(this);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        List<String> possibleEmails = new LinkedList<String>();
+
+        for (Account account : accounts) {
+            // TODO: Check possibleEmail against an email regex or treat
+            // account.name as an email address only for certain account.type
+            // values.
+            possibleEmails.add(account.name);
+        }
+
+        if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
+            String email = possibleEmails.get(0);
+            String[] parts = email.split("@");
+            if (parts.length > 0 && parts[0] != null)
+                return parts[0];
+            else
+                return null;
+        } else
+            return null;
+    }
+
+    /**
+     * calls the MakeRequestTask activity
+     * Made into its own function so that it can be called on button press.
+     * Added for SlugSports
+     */
+    private void startMakeRequestTask(){
+        new MakeRequestTask(mCredential).execute();
     }
 
     /**
@@ -277,7 +349,10 @@ public class LoginTest extends Activity {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             List<String> eventStrings = new ArrayList<String>();
-            Events events = mService.events().list("primary")
+
+
+            //Events events = mService.events().list("primary")
+            Events events = mService.events().list(calSource)
                     .setMaxResults(10)
                     .setTimeMin(now)
                     .setOrderBy("startTime")
