@@ -140,12 +140,18 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case "Locations":
                         chosenLoc = list2.get(position);
-                        currentList = "Days";
+                        //currentList = "Days";
                         chosenCriteria = chosenSp + " : " + list2.get(position);
-                        populateListView(dayList, "Days");
+                        //populateListView(dayList, "Days");
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
+
+                        Intent intent1 = new Intent(MainActivity.this, CalendarViewActivity.class);
+
+                        startActivity(intent1);
+
                         break;
+                    /*
                     case "Days":
                         chosenDay = list2.get(position);
                         currentList = "Hours";
@@ -169,6 +175,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     default:
                         break;
+                    */
                 }
                 updateChosenView();
                 Log.i(LOG_TAG, currentList + " : ");

@@ -4,6 +4,8 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.DatePicker;
 import android.widget.Toast;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
@@ -19,6 +21,8 @@ public class CalendarViewActivity extends FragmentActivity
     int yearOfEvent;
 
     Long date;
+
+    int timesCalled = 0;
 
     public void showTimePickerDialog() {
         DialogFragment newFragment = new TimePickerFragment();
@@ -42,8 +46,6 @@ public class CalendarViewActivity extends FragmentActivity
         calendar.setShowWeekNumber(false);
 
         date = calendar.getDate();
-
-
 
 
         calendar.setOnDateChangeListener(new OnDateChangeListener() {
@@ -80,7 +82,12 @@ public class CalendarViewActivity extends FragmentActivity
             intent.putExtra("AM?", true);
         }
 
-        startActivity(intent);
+        Log.i("DEBUG", "About to create an event");
+
+        if(timesCalled % 2 == 0)
+            startActivity(intent);
+
+        timesCalled++;
     }
 
 
