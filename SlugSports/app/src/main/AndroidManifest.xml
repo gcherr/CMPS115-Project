@@ -14,9 +14,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginTest"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity
             android:name=".FoundGames"
@@ -26,12 +25,10 @@
         <activity android:name=".createEvent" >
         </activity>
         <activity android:name=".CalendarViewActivity" >
-
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginTest"
             android:label="@string/app_name" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,11 +39,10 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-            <!--android:value="@integer/google_play_services_version" -->
+        <!-- android:value="@integer/google_play_services_version" -->
 
-
+        <activity android:name=".MapActivity">
+        </activity>
     </application>
-
-
 
 </manifest>

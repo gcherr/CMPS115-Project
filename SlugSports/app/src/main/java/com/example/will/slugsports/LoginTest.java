@@ -51,6 +51,8 @@ public class LoginTest extends Activity {
     //Added for slugsports
     Button nextActivity;
     Button signIn;
+    Button findGames;
+    Button maps;
     String calSource = "oh9rhquvavljf8f474qdsvts8s@group.calendar.google.com";
     //
 
@@ -102,8 +104,35 @@ public class LoginTest extends Activity {
             }
         });
 
+        findGames = new Button(this);
+        findGames.setText("Find a Game");
+        findGames.setVisibility(View.VISIBLE);
+
+        findGames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginTest.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        maps = new Button(this);
+        maps.setText("Find a Locations on Campus");
+        maps.setVisibility(View.VISIBLE);
+
+        maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginTest.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
+
         activityLayout.addView(signIn);
         activityLayout.addView(nextActivity);
+        activityLayout.addView(findGames);
+        activityLayout.addView(maps);
+
         //
 
         mProgress = new ProgressDialog(this);
@@ -208,8 +237,8 @@ public class LoginTest extends Activity {
                     Toast.makeText(LoginTest.this, "No Username", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(LoginTest.this, getUsername(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginTest.this, MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(LoginTest.this, MainActivity.class);
+                //startActivity(intent);
                 //
             } else {
                 mOutputText.setText("No network connection available.");
