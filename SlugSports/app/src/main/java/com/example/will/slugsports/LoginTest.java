@@ -53,7 +53,7 @@ public class LoginTest extends Activity {
     Button signIn;
     Button findGames;
     Button maps;
-    String calSource = "oh9rhquvavljf8f474qdsvts8s@group.calendar.google.com";
+    String calSource = "ucsc.edu_7265736f757263652d343432@resource.calendar.google.com";
     //
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;

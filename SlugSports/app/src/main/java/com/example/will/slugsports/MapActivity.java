@@ -26,10 +26,14 @@ public class MapActivity extends AppCompatActivity {
 
     Spinner locs ;
     String[] facilities = {
-            "East Field House Martial Arts Room",
-            "East Field House Gym",
             "East Field",
+            "East Field House Dance Studio",
+            "East Field House Gym",
+            "East Field House Martial Arts Room",
+            "East Field House Racquetball Court",
             "East Remote Field",
+            "OPERS Pool",
+            "Wellness Center",
             "West Field House",
             "West Gym",
             "West Tennis Courts"
@@ -40,6 +44,7 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_map);
         locs = (Spinner) findViewById(R.id.spinner);
 
