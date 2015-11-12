@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 
 
@@ -51,6 +54,16 @@ public class MainActivity extends ActionBarActivity {
         //Make each list element clickable
         populateListView(spList, "Sports");
         myListView.setAdapter(arrayAdapter);
+
+        // Enable Local Datastore.
+       // Parse.enableLocalDatastore(this);
+
+       // Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
+
+       // ParseObject testObject = new ParseObject("SlugObject");
+       // testObject.put("Slug", "Sport");
+      //  testObject.saveInBackground();
+
 
     }
 
