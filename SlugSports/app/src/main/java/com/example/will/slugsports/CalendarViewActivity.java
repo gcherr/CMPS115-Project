@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 import android.widget.CalendarView;
@@ -30,6 +31,10 @@ public class CalendarViewActivity extends FragmentActivity
 
     }
 
+    public void confirmSelection(View v){
+        showTimePickerDialog();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +53,10 @@ public class CalendarViewActivity extends FragmentActivity
         date = calendar.getDate();
 
 
+
         calendar.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-
                 if(calendar.getDate() != date){
                     date = calendar.getDate();
 
@@ -62,15 +67,14 @@ public class CalendarViewActivity extends FragmentActivity
 
                     //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 
-                    //showTimePickerDialog();
-
+                    showTimePickerDialog();
 
                 }
-                Intent intent = new Intent(CalendarViewActivity.this, FoundGames.class);
-                intent.putExtra("day", dayOfEvent);
-                intent.putExtra("month", monthOfEvent);
-                intent.putExtra("year", yearOfEvent);
-                startActivity(intent);
+              //  Intent intent = new Intent(CalendarViewActivity.this, FoundGames.class);
+              //  intent.putExtra("day", dayOfEvent);
+              //  intent.putExtra("month", monthOfEvent);
+              //  intent.putExtra("year", yearOfEvent);
+              //  startActivity(intent);
             }
         });
     }
