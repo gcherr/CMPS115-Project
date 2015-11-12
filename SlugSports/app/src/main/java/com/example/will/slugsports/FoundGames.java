@@ -19,10 +19,12 @@ public class FoundGames extends AppCompatActivity {
 
     private ArrayAdapter<String> arrayAdapter;
 
+    Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         //
         super.onCreate(savedInstanceState);
 
@@ -62,7 +64,10 @@ public class FoundGames extends AppCompatActivity {
     public void createEvent(View v){
         Button b = (Button) v;
         String dest;
+
         Intent intent = new Intent(FoundGames.this, createEvent.class);
+
+        intent.putExtras(extras);
 
         startActivity(intent);
     }
