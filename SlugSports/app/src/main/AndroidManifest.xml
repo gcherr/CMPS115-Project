@@ -41,7 +41,9 @@
             android:value="@integer/google_play_services_version" />
         <!-- android:value="@integer/google_play_services_version" -->
 
-        <activity android:name=".MapActivity">
+        <activity android:name=".MapActivity" >
+        </activity>
+        <activity android:name=".ViewEvent" >
         </activity>
     </application>
 

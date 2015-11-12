@@ -364,6 +364,8 @@ public class LoginTest extends Activity {
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
+                Toast.makeText(LoginTest.this, "Error Getting API Data", Toast.LENGTH_SHORT).show();
+
                 cancel(true);
                 return null;
             }
@@ -380,8 +382,8 @@ public class LoginTest extends Activity {
             List<String> eventStrings = new ArrayList<String>();
 
 
-            //Events events = mService.events().list("primary")
-            Events events = mService.events().list(calSource)
+            Events events = mService.events().list("primary")
+            //Events events = mService.events().list(calSource)
                     .setMaxResults(10)
                     .setTimeMin(now)
                     .setOrderBy("startTime")
@@ -401,6 +403,8 @@ public class LoginTest extends Activity {
                 eventStrings.add(
                         String.format("%s ;%s; (%s)", event.getSummary(), description ,start));
             }
+            Toast.makeText(LoginTest.this, "Got API Data", Toast.LENGTH_SHORT).show();
+
             return eventStrings;
         }
 

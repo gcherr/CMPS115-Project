@@ -210,13 +210,18 @@ public class MainActivity extends ActionBarActivity {
 
     //Populate locList with the available locations
     private void populateLocs(ArrayList<String> locList){
-        locList.add("College 8 Basketball Courts");
-        locList.add("College 8 Tennis Courts");
-        locList.add("OPERS Basketball Courts");
-        locList.add("OPERS Field");
-        locList.add("OPERS Gym");
+        locList.add("East Field");
+        locList.add("East Field House Dance Studio");
+        locList.add("East Field House Gym");
+        locList.add("East Field House Martial Arts Room");
+        locList.add("East Field House Racquetball Court");
+        locList.add("East Remote Field");
         locList.add("OPERS Pool");
-        locList.add("OPERS Tennis Courts");
+        locList.add("Wellness Center (Gym)");
+        locList.add("West Field House");
+        locList.add("West Gym");
+        locList.add("West Tennis Courts");
+
     }
 
     //Populate dayList with the available days
@@ -252,5 +257,10 @@ public class MainActivity extends ActionBarActivity {
         hourList.add("9 pm");
         hourList.add("10 pm");
         hourList.add("11 pm");
+    }
+
+    public void popupMap(View v){
+        Intent intent = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(intent);
     }
 }

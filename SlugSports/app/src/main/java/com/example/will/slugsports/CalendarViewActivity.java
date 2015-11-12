@@ -51,6 +51,7 @@ public class CalendarViewActivity extends FragmentActivity
         calendar.setOnDateChangeListener(new OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+
                 if(calendar.getDate() != date){
                     date = calendar.getDate();
 
@@ -58,10 +59,18 @@ public class CalendarViewActivity extends FragmentActivity
                     monthOfEvent = month;
                     yearOfEvent = year;
 
+
                     //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 
-                    showTimePickerDialog();
+                    //showTimePickerDialog();
+
+
                 }
+                Intent intent = new Intent(CalendarViewActivity.this, FoundGames.class);
+                intent.putExtra("day", dayOfEvent);
+                intent.putExtra("month", monthOfEvent);
+                intent.putExtra("year", yearOfEvent);
+                startActivity(intent);
             }
         });
     }
