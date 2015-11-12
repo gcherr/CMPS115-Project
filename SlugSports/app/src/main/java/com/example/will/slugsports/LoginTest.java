@@ -36,7 +36,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +47,7 @@ public class LoginTest extends Activity {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     ProgressDialog mProgress;
+
     //Added for slugsports
     Button nextActivity;
     Button signIn;
@@ -141,15 +141,13 @@ public class LoginTest extends Activity {
         setContentView(activityLayout);
 
         // Initialize credentials and service object.
-        final SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-
-
+        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
-
     }
+
 
     /**
      * Called whenever this activity is pushed to the foreground, such as after
@@ -161,13 +159,9 @@ public class LoginTest extends Activity {
         if (isGooglePlayServicesAvailable()) {
             //refreshResults();
 
-            // If the user is signed in, display the results
-            // else only show the button for signing in
-            // Added for Slug Sports
             if(mCredential.getSelectedAccountName() != null)
                 refreshResults();
             signIn.setVisibility(View.VISIBLE);
-            //
         } else {
             mOutputText.setText("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
@@ -231,15 +225,7 @@ public class LoginTest extends Activity {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
-                //new MakeRequestTask(mCredential).execute();
-                //
-                if(getUsername() == null)
-                    Toast.makeText(LoginTest.this, "No Username", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(LoginTest.this, getUsername(), Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(LoginTest.this, MainActivity.class);
-                //startActivity(intent);
-                //
+                new MakeRequestTask(mCredential).execute();
             } else {
                 mOutputText.setText("No network connection available.");
             }
@@ -271,15 +257,6 @@ public class LoginTest extends Activity {
                 return null;
         } else
             return null;
-    }
-
-    /**
-     * calls the MakeRequestTask activity
-     * Made into its own function so that it can be called on button press.
-     * Added for SlugSports
-     */
-    private void startMakeRequestTask(){
-        new MakeRequestTask(mCredential).execute();
     }
 
     /**
@@ -364,8 +341,6 @@ public class LoginTest extends Activity {
                 return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
-                Toast.makeText(LoginTest.this, "Error Getting API Data", Toast.LENGTH_SHORT).show();
-
                 cancel(true);
                 return null;
             }
@@ -380,10 +355,7 @@ public class LoginTest extends Activity {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             List<String> eventStrings = new ArrayList<String>();
-
-
-            Events events = mService.events().list("primary")
-            //Events events = mService.events().list(calSource)
+            Events events = mService.events().list(calSource)
                     .setMaxResults(10)
                     .setTimeMin(now)
                     .setOrderBy("startTime")
@@ -403,10 +375,9 @@ public class LoginTest extends Activity {
                 eventStrings.add(
                         String.format("%s ;%s; (%s)", event.getSummary(), description ,start));
             }
-            Toast.makeText(LoginTest.this, "Got API Data", Toast.LENGTH_SHORT).show();
-
             return eventStrings;
         }
+
 
         @Override
         protected void onPreExecute() {
@@ -419,22 +390,9 @@ public class LoginTest extends Activity {
             mProgress.hide();
             if (output == null || output.size() == 0) {
                 mOutputText.setText("No results returned.");
-                //added for slugsports
-                nextActivity.setVisibility(View.GONE);
-                //
             } else {
                 output.add(0, "Data retrieved using the Google Calendar API:");
                 mOutputText.setText(TextUtils.join("\n", output));
-                //added for slugsports
-                nextActivity.setVisibility(View.VISIBLE);
-
-                ArrayList<String> list_out = new ArrayList<>();
-                list_out.addAll(list_out);
-                //Intent intent = new Intent(LoginTest.this, FoundGames.class);
-                //intent.putStringArrayListExtra("output", list_out);
-
-                //startActivity(intent);
-                //
             }
         }
 
