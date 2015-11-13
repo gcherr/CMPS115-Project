@@ -1,6 +1,7 @@
 package com.example.will.slugsports;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -33,6 +34,14 @@ public class MainActivity extends ActionBarActivity {
     private String chosenDay = "";
     private String chosenHour ="";
     private String chosenCriteria = "";
+
+    public String getSp(){
+        return chosenSp;
+    }
+
+    public String getLoc(){
+        return chosenLoc;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast toast;
+            Toast toast;
                 switch(currentList){
                     case "Sports":
                         chosenSp =  list2.get(position);
@@ -159,13 +168,20 @@ public class MainActivity extends ActionBarActivity {
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
                         toast.show();
 
-                        Intent intent1 = new Intent(MainActivity.this, CalendarViewActivity.class);
+                        DateDialog d = new DateDialog();
+                        d.setLoc(chosenLoc);
+                        d.setSport(chosenSp);
+                        FragmentTransaction f = getFragmentManager().beginTransaction();
+                        d.show(f, "DatePicker");
 
-                        startActivity(intent1);
+                        //Intent intent1 = new Intent(MainActivity.this, CalendarViewActivity.class);
+
+                        //startActivity(intent1);
 
                         break;
-                    /*
+
                     case "Days":
+                        /*
                         chosenDay = list2.get(position);
                         currentList = "Hours";
                         chosenCriteria = chosenSp + " : " + chosenLoc + " : " + list2.get(position);
@@ -176,7 +192,15 @@ public class MainActivity extends ActionBarActivity {
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
 
                         toast.show();
+                        */
+                        /*
+                        DateDialog d1 = new DateDialog();
+                        FragmentTransaction f1 = getFragmentManager().beginTransaction();
+                        d1.show(f1, "DatePicker");
+                        */
+
                         break;
+                    /*
                     case "Hours":
                         chosenHour = list2.get(position);
                         chosenCriteria = chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position);
