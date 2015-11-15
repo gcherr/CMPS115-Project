@@ -174,6 +174,8 @@ public class MainActivity extends ActionBarActivity {
                         FragmentTransaction f = getFragmentManager().beginTransaction();
                         d.show(f, "DatePicker");
 
+
+
                         //Intent intent1 = new Intent(MainActivity.this, CalendarViewActivity.class);
 
                         //startActivity(intent1);

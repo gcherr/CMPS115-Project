@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -43,8 +44,15 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         DatePickerDialog d = new DatePickerDialog(getActivity(), this, year, month, day);
         d.getDatePicker().setCalendarViewShown(true);
         d.getDatePicker().setSpinnersShown(false);
+        d.onDateChanged(d.getDatePicker(),year,month,day);
+
 
         return d;
+
+    }
+
+    public void onDateChanged(DatePicker view, int year, int month, int day){
+
 
     }
 
@@ -78,6 +86,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
             intent1.putExtra("year", yy);
             intent1.putExtra("sport", sport);
             intent1.putExtra("location", location);
+
             startActivity(intent1);
             getActivity().finish();
 

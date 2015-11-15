@@ -1,8 +1,10 @@
 package com.example.will.slugsports;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,10 +27,16 @@ public class FoundGames extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //
         extras = getIntent().getExtras();
+
         //
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_found_games);
+
+        SharedPreferences prefs = this.getSharedPreferences(
+                "com.example.will", Context.MODE_PRIVATE);
+
+        prefs.edit().putBoolean("firstCreateEvent", true).apply();
         /*
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -55,15 +63,12 @@ public class FoundGames extends AppCompatActivity {
         */
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
     public void createEvent(View v){
-        Button b = (Button) v;
-        String dest;
 
         Intent intent = new Intent(FoundGames.this, createEvent.class);
 
