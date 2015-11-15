@@ -1,17 +1,21 @@
 package com.example.will.slugsports;
 
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+
+import java.util.Calendar;
 
 public class createEvent extends FragmentActivity
         implements TimePickerFragment.OnTimeSelectedListener{
@@ -38,14 +42,14 @@ public class createEvent extends FragmentActivity
             Parse.enableLocalDatastore(this);
 
 
-            Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
+            //Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
 
             prefs.edit().putBoolean("firstCreateEvent", false).apply();
         }
 
         event = new ParseObject("Event");
 
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText = (EditText) findViewById(R.id.editText10);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +59,9 @@ public class createEvent extends FragmentActivity
 
 
         });
-
+        //prevent keyboard
+        editText.setRawInputType(InputType.TYPE_NULL);
+        editText.setFocusable(true);
     }
 
     @Override
@@ -118,7 +124,7 @@ public class createEvent extends FragmentActivity
             AM_PM = "AM";
         }
 
-        EditText editText= (EditText) findViewById(R.id.editText);
+        EditText editText= (EditText) findViewById(R.id.editText10);
         editText.setText(hour + ":" + minute + " " + AM_PM);
     }
 }
