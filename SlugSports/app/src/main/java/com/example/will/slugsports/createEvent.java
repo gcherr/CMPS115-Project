@@ -33,7 +33,7 @@ public class createEvent extends FragmentActivity
         setContentView(R.layout.activity_create_event);
 
         bundle = getIntent().getExtras();
-
+/*
         SharedPreferences prefs = this.getSharedPreferences(
                 "com.example.will", Context.MODE_PRIVATE);
 
@@ -45,7 +45,7 @@ public class createEvent extends FragmentActivity
 
             prefs.edit().putBoolean("firstCreateEvent", false).apply();
         }
-
+*/
         event = new ParseObject("Event");
 
         EditText editText = (EditText) findViewById(R.id.editText10);
@@ -76,17 +76,30 @@ public class createEvent extends FragmentActivity
 
         //Add error checking/filling in default values
         if(userName == null){
-
+            Toast.makeText(getApplicationContext(), "username null", Toast.LENGTH_LONG).show();
         }
+
 
         editText = (EditText) findViewById(R.id.editText);
         String eventName = editText.getText().toString();
 
+        if(userName == null){
+            Toast.makeText(getApplicationContext(), "eventname null", Toast.LENGTH_LONG).show();
+        }
+
         editText = (EditText) findViewById(R.id.editText2);
         String numPlayers = editText.getText().toString();
 
+        if(userName == null){
+            Toast.makeText(getApplicationContext(), "numplayers null", Toast.LENGTH_LONG).show();
+        }
+
         editText = (EditText) findViewById(R.id.editText3);
         String eventDescription = editText.getText().toString();
+
+        if(eventDescription == null){
+            Toast.makeText(getApplicationContext(), "eventdescription null", Toast.LENGTH_LONG).show();
+        }
 
         int day = bundle.getInt("day");
         int month = bundle.getInt("month");
@@ -124,6 +137,9 @@ public class createEvent extends FragmentActivity
         }
 
         EditText editText= (EditText) findViewById(R.id.editText10);
-        editText.setText(hour + ":" + minute + " " + AM_PM);
+        if(minute > 10)
+            editText.setText(hour + ":" + minute + " " + AM_PM);
+        else
+            editText.setText(hour + ":0" + minute + " " + AM_PM);
     }
 }
