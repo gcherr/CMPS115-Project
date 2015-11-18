@@ -1,5 +1,6 @@
 package com.example.will.slugsports;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -46,6 +48,11 @@ public class createEvent extends FragmentActivity
             prefs.edit().putBoolean("firstCreateEvent", false).apply();
         }
 */
+
+/*
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
+*/
         event = new ParseObject("Event");
 
         EditText editText = (EditText) findViewById(R.id.editText10);
@@ -75,35 +82,44 @@ public class createEvent extends FragmentActivity
         String userName = editText.getText().toString();
 
         //Add error checking/filling in default values
-        if(userName == null){
-            Toast.makeText(getApplicationContext(), "username null", Toast.LENGTH_LONG).show();
+        if(userName.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_LONG).show();
+            ;
         }
 
+        if(AM_PM.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please enter a time", Toast.LENGTH_LONG).show();
+
+        }
 
         editText = (EditText) findViewById(R.id.editText);
         String eventName = editText.getText().toString();
 
-        if(userName == null){
-            Toast.makeText(getApplicationContext(), "eventname null", Toast.LENGTH_LONG).show();
+        if(eventName.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please enter an event name", Toast.LENGTH_LONG).show();
+
         }
 
         editText = (EditText) findViewById(R.id.editText2);
         String numPlayers = editText.getText().toString();
 
-        if(userName == null){
-            Toast.makeText(getApplicationContext(), "numplayers null", Toast.LENGTH_LONG).show();
+        if(numPlayers.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please specify the number of players", Toast.LENGTH_LONG).show();
+
         }
 
         editText = (EditText) findViewById(R.id.editText3);
         String eventDescription = editText.getText().toString();
 
-        if(eventDescription == null){
-            Toast.makeText(getApplicationContext(), "eventdescription null", Toast.LENGTH_LONG).show();
+        if(eventDescription.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please enter a description", Toast.LENGTH_LONG).show();
+
         }
 
         int day = bundle.getInt("day");
         int month = bundle.getInt("month");
         int year = bundle.getInt("year");
+
 
         event.put("userName", userName);
         event.put("eventName", eventName);
@@ -112,14 +128,17 @@ public class createEvent extends FragmentActivity
         event.put("day", day);
         event.put("month", month);
         event.put("year", year);
+
         event.put("minute", minute);
         event.put("hour", hour);
         event.put("AM_PM", AM_PM);
 
-        Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 
+        Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+        Log.i("DEBUG", "Saving in BG");
     //    event.saveInBackground();
         event.saveInBackground();
+        Log.i("DEBUG", "Saved in BG");
 
     }
 

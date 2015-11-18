@@ -16,7 +16,10 @@ public class App extends Application{
     @Override public void onCreate() {
         super.onCreate();
 
+        Parse.enableLocalDatastore(getApplicationContext());
+
         Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
+
     }
 
     static public void setCred(GoogleAccountCredential c){
