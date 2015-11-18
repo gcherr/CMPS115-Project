@@ -41,7 +41,6 @@ public class createEvent extends FragmentActivity
 
             Parse.enableLocalDatastore(this);
 
-
             //Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
 
             prefs.edit().putBoolean("firstCreateEvent", false).apply();

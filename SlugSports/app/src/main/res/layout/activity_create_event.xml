@@ -135,6 +135,7 @@
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText"
         android:layout_alignRight="@+id/editText4"
-        android:layout_alignEnd="@+id/editText4" />
+        android:layout_alignEnd="@+id/editText4"
+        android:focusable="false"/>
 
 </RelativeLayout>
