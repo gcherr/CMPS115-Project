@@ -50,7 +50,7 @@ public class CalendarViewActivity extends FragmentActivity
         // sets whether to show the week number.
         calendar.setShowWeekNumber(false);
 
-        date = calendar.getDate();
+        //date = calendar.getDate();
 
 
 
@@ -58,7 +58,7 @@ public class CalendarViewActivity extends FragmentActivity
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 if(calendar.getDate() != date){
-                    date = calendar.getDate();
+                    //date = calendar.getDate();
 
                     dayOfEvent = day;
                     monthOfEvent = month;
@@ -70,11 +70,13 @@ public class CalendarViewActivity extends FragmentActivity
                     showTimePickerDialog();
 
                 }
-              //  Intent intent = new Intent(CalendarViewActivity.this, FoundGames.class);
-              //  intent.putExtra("day", dayOfEvent);
-              //  intent.putExtra("month", monthOfEvent);
-              //  intent.putExtra("year", yearOfEvent);
-              //  startActivity(intent);
+
+                Intent intent = new Intent(CalendarViewActivity.this, FoundGames.class);
+                intent.putExtra("day", dayOfEvent);
+                intent.putExtra("month", monthOfEvent);
+                intent.putExtra("year", yearOfEvent);
+                startActivity(intent);
+
             }
         });
     }
