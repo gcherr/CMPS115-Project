@@ -57,6 +57,7 @@ public class LoginTest extends Activity {
     Button signIn;
     Button findGames;
     Button maps;
+    Button manual;
     String calSource = "ucsc.edu_7265736f757263652d343432@resource.calendar.google.com";
     //
 
@@ -80,6 +81,7 @@ public class LoginTest extends Activity {
         activityLayout.setLayoutParams(lp);
         activityLayout.setOrientation(LinearLayout.VERTICAL);
         activityLayout.setPadding(16, 16, 16, 16);
+        activityLayout.setBackground(getResources().getDrawable(R.drawable.ic_launcher));
 
         ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -132,10 +134,15 @@ public class LoginTest extends Activity {
             }
         });
 
+        manual = new Button(this);
+        manual.setText("User Manual");
+        manual.setVisibility(View.VISIBLE);
+
         activityLayout.addView(signIn);
         activityLayout.addView(nextActivity);
         activityLayout.addView(findGames);
         activityLayout.addView(maps);
+        activityLayout.addView(manual);
 
         //
 

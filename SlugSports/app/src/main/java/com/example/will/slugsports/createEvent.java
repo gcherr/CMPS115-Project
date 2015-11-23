@@ -133,7 +133,6 @@ public class createEvent extends FragmentActivity
         event.put("hour", hour);
         event.put("AM_PM", AM_PM);
 
-
         Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
         Log.i("DEBUG", "Saving in BG");
     //    event.saveInBackground();
