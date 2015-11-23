@@ -78,65 +78,62 @@ public class createEvent extends FragmentActivity
 
     public void buttonPressed(View v){
 
-        EditText editText = (EditText) findViewById(R.id.editText4);
-        String userName = editText.getText().toString();
-
-        //Add error checking/filling in default values
-        if(userName.length() < 1){
-            Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_LONG).show();
-            ;
-        }
-
-        if(AM_PM.length() < 1){
-            Toast.makeText(getApplicationContext(), "Please enter a time", Toast.LENGTH_LONG).show();
-
-        }
-
-        editText = (EditText) findViewById(R.id.editText);
+        EditText editText = (EditText) findViewById(R.id.editText);
         String eventName = editText.getText().toString();
 
-        if(eventName.length() < 1){
-            Toast.makeText(getApplicationContext(), "Please enter an event name", Toast.LENGTH_LONG).show();
 
+        if(eventName.length() < 1) {
+            //Toast.makeText(getApplicationContext(), "Please enter an event name", Toast.LENGTH_LONG).show();
+            eventName = "No Name";
         }
 
         editText = (EditText) findViewById(R.id.editText2);
-        String numPlayers = editText.getText().toString();
+        String prefferedPlayers = editText.getText().toString();
 
-        if(numPlayers.length() < 1){
-            Toast.makeText(getApplicationContext(), "Please specify the number of players", Toast.LENGTH_LONG).show();
-
+        if(prefferedPlayers.length() < 1) {
+            //Toast.makeText(getApplicationContext(), "Please specify the number of players", Toast.LENGTH_LONG).show();
+            prefferedPlayers = "2";
         }
 
         editText = (EditText) findViewById(R.id.editText3);
         String eventDescription = editText.getText().toString();
 
         if(eventDescription.length() < 1){
-            Toast.makeText(getApplicationContext(), "Please enter a description", Toast.LENGTH_LONG).show();
-
+            //Toast.makeText(getApplicationContext(), "Please enter a description", Toast.LENGTH_LONG).show();
+            eventDescription = "No Description";
         }
+
+        if(AM_PM.length() < 1){
+            Toast.makeText(getApplicationContext(), "Please enter a time", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+
+        event.put("eventName", eventName);
+        event.put("prefferredPlayers", prefferedPlayers);
+        event.put("description", eventDescription);
+        event.put("minute", minute);
+        event.put("hour", hour);
+        event.put("AM_PM", AM_PM);
 
         int day = bundle.getInt("day");
         int month = bundle.getInt("month");
         int year = bundle.getInt("year");
 
-
-        event.put("userName", userName);
-        event.put("eventName", eventName);
-        event.put("numPlayers", numPlayers);
-        event.put("description", eventDescription);
         event.put("day", day);
         event.put("month", month);
         event.put("year", year);
 
-        event.put("minute", minute);
-        event.put("hour", hour);
-        event.put("AM_PM", AM_PM);
+        String location = bundle.getString("location");
+        String sport = bundle.getString("sport");
 
+        event.put("location", location);
+        event.put("sport",sport);
 
-        Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
-        Log.i("DEBUG", "Saving in BG");
-    //    event.saveInBackground();
+        event.put("numPlayers",1);
+
+        //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
         event.saveInBackground();
         Log.i("DEBUG", "Saved in BG");
 
