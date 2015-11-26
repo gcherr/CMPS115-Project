@@ -14,13 +14,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,16 +57,43 @@ public class FoundGames extends AppCompatActivity {
         query.whereEqualTo("month", extras.getInt("month"));
         query.whereEqualTo("year", extras.getInt("year"));
 
+        //final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>{};
+        ArrayList<String> arrayList = new ArrayList<String>();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> eventList, ParseException e) {
                 if (e == null && eventList.size() > 0) {
-                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: "+eventList.get(0).getString("eventName"));
+                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: " + eventList.get(0).getString("eventName"));
+                    CharSequence c = "Retrieved " + eventList.size() + " event. Event name: " + eventList.get(0).getString("eventName");
+                    Toast.makeText(FoundGames.this, c, Toast.LENGTH_SHORT).show();
+                    ListView myListView = (ListView) findViewById(R.id.listView2);
+
+                    final ArrayList<String> aList = new ArrayList<String>();
+
+                    for(int i = 0; i < eventList.size(); i++){
+                        Object object = eventList.get(i);
+                        //String name = ((ParseObject) object).getObjectId().toString();
+                        String name = ((ParseObject) object).getString("eventName");
+                        aList.add(name);
+                    }
+
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                            FoundGames.this, android.R.layout.simple_list_item_1, aList
+                    );
+
+                    myListView.setAdapter(arrayAdapter);
+
                 } else {
                     Log.i("DEBUG", "No Events on day");
                     //MAKE TOAST;
                 }
             }
         });
+
+
+
+
+
 
 
         /*
