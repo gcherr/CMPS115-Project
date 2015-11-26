@@ -122,7 +122,8 @@
             android:text="New Button"
             android:id="@+id/button3"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="buttonPressed" />
     </LinearLayout>
 </ScrollView>
 
