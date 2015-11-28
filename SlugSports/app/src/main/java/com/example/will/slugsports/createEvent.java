@@ -111,7 +111,7 @@ public class createEvent extends FragmentActivity
 
 
         event.put("eventName", eventName);
-        event.put("numPlayers", preferredPlayers);
+        event.put("numPlayers", preferredPlayers); //Not the # of people joined, the # preferred
         event.put("description", eventDescription);
         event.put("minute", minute);
         event.put("hour", hour);

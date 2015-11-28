@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -35,6 +36,7 @@ public class FoundGames extends AppCompatActivity {
     ProgressDialog progressDialog;
     Bundle extras;
     final ArrayList<String> arrayList = new ArrayList<String>();
+    ListView myListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,16 @@ public class FoundGames extends AppCompatActivity {
                 extras.getString("sport") + " at " + extras.getString("location") + " on " +
                 extras.getInt("month") + "/" + extras.getInt("day") + "/" +
                 extras.getInt("year"));
+
+        myListView = (ListView) findViewById(R.id.listView2);
+        //set the listener for list elements and sends the data
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(FoundGames.this, ViewEvent.class);
+                startActivity(intent);
+            }
+        });
 
         //fetchParse();
 
@@ -95,7 +107,7 @@ public class FoundGames extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         arrayList.clear();
-        ListView myListView = (ListView) findViewById(R.id.listView2);
+        //myListView = (ListView) findViewById(R.id.listView2);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 FoundGames.this, android.R.layout.simple_list_item_1, arrayList
         );
@@ -114,7 +126,6 @@ public class FoundGames extends AppCompatActivity {
 
     public void fetchParse(){
 
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         query.whereEqualTo("sport", extras.getString("sport"));
         query.whereEqualTo("location", extras.getString("location"));
@@ -132,10 +143,11 @@ public class FoundGames extends AppCompatActivity {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> eventList, ParseException e) {
                 if (e == null && eventList.size() > 0) {
-                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: " + eventList.get(0).getString("eventName"));
-                    CharSequence c = "Retrieved " + eventList.size() + " event. Event name: " + eventList.get(0).getString("eventName");
+                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: " +
+                            eventList.get(0).getString("eventName"));
+                    CharSequence c = "Retrieved " + eventList.size() + " event(s).";
                     Toast.makeText(FoundGames.this, c, Toast.LENGTH_SHORT).show();
-                    ListView myListView = (ListView) findViewById(R.id.listView2);
+                    //myListView = (ListView) findViewById(R.id.listView2);
 
                     //final ArrayList<String> aList = new ArrayList<String>();
                     //final ArrayList<String> rrayList = arrayList;
@@ -155,6 +167,7 @@ public class FoundGames extends AppCompatActivity {
 
                 } else {
                     Log.i("DEBUG", "No Events on day");
+                    Toast.makeText(FoundGames.this, "No events found", Toast.LENGTH_SHORT).show();
                     //MAKE TOAST;
                 }
                 progressDialog.dismiss();
