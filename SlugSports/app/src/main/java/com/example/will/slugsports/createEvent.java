@@ -140,6 +140,8 @@ public class createEvent extends FragmentActivity
         event.saveInBackground();
         Log.i("DEBUG", "Saved in BG");
 
+        super.onBackPressed();
+
     }
 
     public void onTimeSelected(int hourOfEvent, int minuteOfEvent){

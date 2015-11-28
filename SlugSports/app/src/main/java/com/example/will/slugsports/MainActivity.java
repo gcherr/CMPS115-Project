@@ -246,6 +246,7 @@ public class MainActivity extends ActionBarActivity {
         spList.add("Swimming");
         spList.add("Tennis");
         spList.add("Weightlifting");
+        spList.add("Other");
     }
 
     //Populate locList with the available locations
@@ -261,6 +262,7 @@ public class MainActivity extends ActionBarActivity {
         locList.add("West Field House");
         locList.add("West Gym");
         locList.add("West Tennis Courts");
+        locList.add("Other");
 
     }
 
