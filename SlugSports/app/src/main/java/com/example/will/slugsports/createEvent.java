@@ -103,13 +103,20 @@ public class createEvent extends FragmentActivity
             eventDescription = "No Description";
         }
 
+        editText = (EditText) findViewById(R.id.editText4);
+        String userName = editText.getText().toString();
+
+        if(userName.length() < 1){
+            userName = "user";
+        }
+
         if(AM_PM.length() < 1){
             Toast.makeText(getApplicationContext(), "Please enter a time", Toast.LENGTH_LONG).show();
             return;
         }
 
 
-
+        event.put("userName", userName);
         event.put("eventName", eventName);
         event.put("numPlayers", preferredPlayers); //Not the # of people joined, the # preferred
         event.put("description", eventDescription);

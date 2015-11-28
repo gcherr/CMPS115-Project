@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FoundGames extends AppCompatActivity {
@@ -37,6 +40,8 @@ public class FoundGames extends AppCompatActivity {
     Bundle extras;
     final ArrayList<String> arrayList = new ArrayList<String>();
     ListView myListView;
+
+    ArrayList<String> idList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class FoundGames extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(FoundGames.this, idList.get(position), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(FoundGames.this, ViewEvent.class);
                 startActivity(intent);
             }
@@ -107,11 +114,14 @@ public class FoundGames extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         arrayList.clear();
+        idList.clear();
         //myListView = (ListView) findViewById(R.id.listView2);
+        /*
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 FoundGames.this, android.R.layout.simple_list_item_1, arrayList
         );
         myListView.setAdapter(arrayAdapter);
+        */
         fetchParse();
     }
 
@@ -152,18 +162,59 @@ public class FoundGames extends AppCompatActivity {
                     //final ArrayList<String> aList = new ArrayList<String>();
                     //final ArrayList<String> rrayList = arrayList;
 
+                    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                    Map<String, String> map;
+
                     for(int i = 0; i < eventList.size(); i++){
+                        map = new HashMap<String, String>();
                         Object object = eventList.get(i);
                         //String name = ((ParseObject) object).getObjectId().toString();
-                        String name = ((ParseObject) object).getString("eventName");
-                        arrayList.add(name);
-                    }
+                        //String name = ((ParseObject) object).getString("eventName");
+                        //arrayList.add(name);
 
+
+                        idList.add(((ParseObject) object).getString("objectId"));
+
+                        map.put("eventName", ((ParseObject) object).getString("eventName"));
+                        map.put("id", ((ParseObject) object).getString("objectId"));
+                        map.put("username", ((ParseObject) object).getString("userName"));
+                        map.put("AM_PM", ((ParseObject) object).getString("AM_PM"));
+                        list.add(map);
+                    }
+/*
                     final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                             FoundGames.this, android.R.layout.simple_list_item_1, arrayList
                     );
+*/
+                    SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
+                            R.layout.event_row, new String[] {"eventName", "id", "username", "AM_PM"},
+                            new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
+                            );
 
-                    myListView.setAdapter(arrayAdapter);
+                    //List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+                    /*
+                    for(int i = 0; i < eventList.size(); i++){
+                        Object object = eventList.get(i);
+                        Map<String, String> datum = new HashMap<String, String>(2);
+                        //String name = ((ParseObject) object).getObjectId().toString();
+                        String name = ((ParseObject) object).getString("eventName");
+                        String creator = ((ParseObject) object).getString("userName");
+                        datum.put("event", name);
+                        datum.put("creator", creator);
+
+                    }
+                    SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, data,
+                            android.R.layout.simple_list_item_1,
+                            new String[] {"event", "creator"},
+                            new int[] {android.R.id.text1,
+                                    android.R.id.text2});
+
+                    myListView.setAdapter(adapter);
+                    */
+
+                    myListView.setAdapter(adapter);
+
+                    //myListView.setAdapter(arrayAdapter);
 
                 } else {
                     Log.i("DEBUG", "No Events on day");
