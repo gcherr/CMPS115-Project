@@ -88,11 +88,11 @@ public class createEvent extends FragmentActivity
         }
 
         editText = (EditText) findViewById(R.id.editText2);
-        String prefferedPlayers = editText.getText().toString();
+        String preferredPlayers = editText.getText().toString();
 
-        if(prefferedPlayers.length() < 1) {
+        if(preferredPlayers.length() < 1) {
             //Toast.makeText(getApplicationContext(), "Please specify the number of players", Toast.LENGTH_LONG).show();
-            prefferedPlayers = "2";
+            preferredPlayers = "2";
         }
 
         editText = (EditText) findViewById(R.id.editText3);
@@ -111,7 +111,7 @@ public class createEvent extends FragmentActivity
 
 
         event.put("eventName", eventName);
-        event.put("prefferredPlayers", prefferedPlayers);
+        event.put("numPlayers", preferredPlayers);
         event.put("description", eventDescription);
         event.put("minute", minute);
         event.put("hour", hour);
@@ -131,9 +131,12 @@ public class createEvent extends FragmentActivity
         event.put("location", location);
         event.put("sport",sport);
 
-        event.put("numPlayers",1);
-
         //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+
+        Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+        Log.i("DEBUG", "Saving in BG");
+        //event.saveInBackground();
+
         event.saveInBackground();
         Log.i("DEBUG", "Saved in BG");
 

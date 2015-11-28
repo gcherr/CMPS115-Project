@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#e5f6ff">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,23 +16,29 @@
             android:text="Create Event!"
             android:id="@+id/textView8"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/enter_name"
-                android:id="@+id/textView9" />
+                android:id="@+id/textView9"
+                android:layout_marginRight="20dp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText4"
                 android:inputType="textPersonName"/>
@@ -41,17 +48,21 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/select_time"
-                android:id="@+id/textView10" />
+                android:id="@+id/textView10"
+                android:layout_marginRight="20dp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText10"
                 android:focusable="false"/>
@@ -61,37 +72,45 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/event_name"
-                android:id="@+id/textView11" />
+                android:id="@+id/textView11"
+                android:layout_marginRight="20dp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/preferred_num"
-                android:id="@+id/textView12" />
+                android:id="@+id/textView12"
+                android:layout_marginRight="20dp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText2"
                 android:inputType="number"/>
@@ -101,17 +120,21 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/description"
-                android:id="@+id/textView13" />
+                android:id="@+id/textView13"
+                android:layout_marginRight="20dp" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText3" />
         </LinearLayout>
@@ -119,11 +142,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
+            android:text="Create Game"
             android:id="@+id/button3"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:onClick="buttonPressed" />
+            android:onClick="buttonPressed"
+            android:layout_marginTop="20dp"
+            android:background = "@drawable/roundedbutton"/>
+
     </LinearLayout>
 </ScrollView>
 
