@@ -75,6 +75,9 @@ public class FoundGames extends AppCompatActivity {
                 Toast.makeText(FoundGames.this, list.get(position).get("id"), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(FoundGames.this, ViewEvent.class);
+
+                intent.putExtra("objectId", list.get(position).get("id"));
+
                 startActivity(intent);
             }
         });
@@ -117,13 +120,18 @@ public class FoundGames extends AppCompatActivity {
         super.onResume();
 
         //clear the list so events don't accumulate
-        arrayList.clear();
+        list.clear();
         myListView = (ListView) findViewById(R.id.listView2);
-
+/*
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                FoundGames.this, android.R.layout.simple_list_item_1, arrayList
+                FoundGames.this, android.R.layout.simple_list_item_1, list
         );
-        myListView.setAdapter(arrayAdapter);
+*/
+        SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
+                R.layout.event_row, new String[] {"eventName", "id", "username", "time"},
+                new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
+        );
+        myListView.setAdapter(adapter);
 
         fetchParse();
     }
@@ -146,6 +154,7 @@ public class FoundGames extends AppCompatActivity {
         query.whereEqualTo("day", extras.getInt("day"));
         query.whereEqualTo("month", extras.getInt("month"));
         query.whereEqualTo("year", extras.getInt("year"));
+        query.orderByAscending("hour");
 
         progressDialog = ProgressDialog.show(FoundGames.this, "",
                 "Fetching available games...", true);

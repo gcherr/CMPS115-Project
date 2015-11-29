@@ -91,10 +91,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Join"
         android:id="@+id/joinGame"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/NumJoined"
-        android:layout_alignEnd="@+id/NumJoined" />
+        android:layout_alignEnd="@+id/NumJoined"
+        android:onClick="joinEvent" />
 
 </RelativeLayout>
