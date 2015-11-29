@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import org.json.JSONArray;
+
 import java.util.Calendar;
 
 public class createEvent extends FragmentActivity
@@ -138,6 +140,10 @@ public class createEvent extends FragmentActivity
 
         event.put("location", location);
         event.put("sport",sport);
+
+        JSONArray usersAttending = new JSONArray();
+        usersAttending.put(App.getAcct());
+        event.put("usersAttending", usersAttending);
 
         //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 

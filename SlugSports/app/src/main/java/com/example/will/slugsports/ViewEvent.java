@@ -12,6 +12,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Arrays;
+
 public class ViewEvent extends AppCompatActivity {
 
     Bundle bundle;
@@ -53,6 +55,7 @@ public class ViewEvent extends AppCompatActivity {
                     // will get sent to the Parse Cloud. playerName hasn't changed.
                     if(button.getText().toString().equalsIgnoreCase("Join")) {
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
+                        event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));
                         Toast.makeText(ViewEvent.this, "Joined event", Toast.LENGTH_SHORT).show();
                         button.setText("Un-Join");
                     }
