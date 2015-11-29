@@ -41,7 +41,8 @@ public class FoundGames extends AppCompatActivity {
     final ArrayList<String> arrayList = new ArrayList<String>();
     ListView myListView;
 
-    ArrayList<String> idList = new ArrayList<String>();
+    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,8 @@ public class FoundGames extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(FoundGames.this, idList.get(position), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FoundGames.this, idList.get(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoundGames.this, list.get(position).get("id"), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(FoundGames.this, ViewEvent.class);
                 startActivity(intent);
@@ -113,15 +115,16 @@ public class FoundGames extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+
+        //clear the list so events don't accumulate
         arrayList.clear();
-        idList.clear();
-        //myListView = (ListView) findViewById(R.id.listView2);
-        /*
+        myListView = (ListView) findViewById(R.id.listView2);
+
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 FoundGames.this, android.R.layout.simple_list_item_1, arrayList
         );
         myListView.setAdapter(arrayAdapter);
-        */
+
         fetchParse();
     }
 
@@ -162,7 +165,7 @@ public class FoundGames extends AppCompatActivity {
                     //final ArrayList<String> aList = new ArrayList<String>();
                     //final ArrayList<String> rrayList = arrayList;
 
-                    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+                    //List<Map<String, String>> list = new ArrayList<Map<String, String>>();
                     Map<String, String> map;
 
                     for(int i = 0; i < eventList.size(); i++){
@@ -172,13 +175,15 @@ public class FoundGames extends AppCompatActivity {
                         //String name = ((ParseObject) object).getString("eventName");
                         //arrayList.add(name);
 
-
-                        idList.add(((ParseObject) object).getString("objectId"));
+                        String hourString = ((ParseObject) object).getInt("hour")+"";
+                        int minute = ((ParseObject) object).getInt("minute");
+                        String minuteString = (minute < 10) ? "0"+minute : ""+minute;
 
                         map.put("eventName", ((ParseObject) object).getString("eventName"));
-                        map.put("id", ((ParseObject) object).getString("objectId"));
+                        map.put("id", ((ParseObject) object).getObjectId());
                         map.put("username", ((ParseObject) object).getString("userName"));
-                        map.put("AM_PM", ((ParseObject) object).getString("AM_PM"));
+                        map.put("time", (hourString + ":" + minuteString + " " +
+                                ((ParseObject) object).getString("AM_PM")));
                         list.add(map);
                     }
 /*
@@ -187,7 +192,7 @@ public class FoundGames extends AppCompatActivity {
                     );
 */
                     SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
-                            R.layout.event_row, new String[] {"eventName", "id", "username", "AM_PM"},
+                            R.layout.event_row, new String[] {"eventName", "id", "username", "time"},
                             new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
                             );
 
