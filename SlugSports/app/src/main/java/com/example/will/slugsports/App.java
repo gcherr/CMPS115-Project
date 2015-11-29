@@ -26,7 +26,11 @@ public class App extends Application{
         cred = c;
     }
 
-    static public void setAcct(){
+    static public void setAcct() {
         account = cred.getSelectedAccountName();
+    }
+
+    static public String getAcct(){
+        return account;
     }
 }
