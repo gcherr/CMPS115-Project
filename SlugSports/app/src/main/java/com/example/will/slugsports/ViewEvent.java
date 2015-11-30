@@ -69,15 +69,10 @@ public class ViewEvent extends AppCompatActivity {
                     }
                 }
 
-                if(alreadyJoined){
-                    Toast.makeText(ViewEvent.this, "You have already joined this event", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (e == null) {
+               if (e == null) {
                     // Now let's update it with some new data. In this case, only cheatMode and score
                     // will get sent to the Parse Cloud. playerName hasn't changed.
-                    if(button.getText().toString().equalsIgnoreCase("Join")) {
-
+                    if(!alreadyJoined) {
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
                         event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));
 
