@@ -12,6 +12,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.Arrays;
 
 public class ViewEvent extends AppCompatActivity {
@@ -42,25 +45,50 @@ public class ViewEvent extends AppCompatActivity {
     }
 
     public void joinEvent(View v){
-        final Button button = (Button) findViewById(R.id.joinGame);
 
+        final Button button = (Button) findViewById(R.id.joinGame);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
 
         // Retrieve the object by id
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
             public void done(ParseObject event, ParseException e) {
-                if (e == null) {
+
+                boolean alreadyJoined = false;
+
+                JSONArray usersAttending = event.getJSONArray("usersAttending");
+
+                for(int i = 0; i < usersAttending.length(); i++) {
+                    try {
+
+                        String user = usersAttending.get(i).toString();
+                        if(user.equalsIgnoreCase(App.getAcct())) alreadyJoined = true;
+
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                if(alreadyJoined){
+                    Toast.makeText(ViewEvent.this, "You have already joined this event", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (e == null) {
                     // Now let's update it with some new data. In this case, only cheatMode and score
                     // will get sent to the Parse Cloud. playerName hasn't changed.
                     if(button.getText().toString().equalsIgnoreCase("Join")) {
+
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
                         event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));
+
                         Toast.makeText(ViewEvent.this, "Joined event", Toast.LENGTH_SHORT).show();
                         button.setText("Un-Join");
                     }
+
                     else{
                         event.put("numJoined", event.getNumber("numJoined").intValue() - 1);
+                        event.removeAll("usersAttending", Arrays.asList(App.getAcct()));
+
                         Toast.makeText(ViewEvent.this, "Unjoined event", Toast.LENGTH_SHORT).show();
                         button.setText("Join");
                     }
