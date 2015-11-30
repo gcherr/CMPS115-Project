@@ -154,7 +154,10 @@ public class FoundGames extends AppCompatActivity {
         query.whereEqualTo("day", extras.getInt("day"));
         query.whereEqualTo("month", extras.getInt("month"));
         query.whereEqualTo("year", extras.getInt("year"));
+
+        query.orderByAscending("AM_PM");
         query.orderByAscending("hour");
+        query.orderByAscending("minute");
 
         progressDialog = ProgressDialog.show(FoundGames.this, "",
                 "Fetching available games...", true);
