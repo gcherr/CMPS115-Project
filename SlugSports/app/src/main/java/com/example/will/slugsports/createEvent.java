@@ -37,24 +37,7 @@ public class createEvent extends FragmentActivity
         setContentView(R.layout.activity_create_event);
 
         bundle = getIntent().getExtras();
-/*
-        SharedPreferences prefs = this.getSharedPreferences(
-                "com.example.will", Context.MODE_PRIVATE);
 
-        if(prefs.getBoolean("firstCreateEvent", true)) {
-
-            Parse.enableLocalDatastore(this);
-
-            //Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
-
-            prefs.edit().putBoolean("firstCreateEvent", false).apply();
-        }
-*/
-
-/*
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
-*/
         event = new ParseObject("Event");
 
         EditText editText = (EditText) findViewById(R.id.editText10);
@@ -85,7 +68,6 @@ public class createEvent extends FragmentActivity
 
 
         if(eventName.length() < 1) {
-            //Toast.makeText(getApplicationContext(), "Please enter an event name", Toast.LENGTH_LONG).show();
             eventName = "No Name";
         }
 
@@ -93,7 +75,6 @@ public class createEvent extends FragmentActivity
         String preferredPlayers = editText.getText().toString();
 
         if(preferredPlayers.length() < 1) {
-            //Toast.makeText(getApplicationContext(), "Please specify the number of players", Toast.LENGTH_LONG).show();
             preferredPlayers = "2";
         }
 
@@ -101,7 +82,6 @@ public class createEvent extends FragmentActivity
         String eventDescription = editText.getText().toString();
 
         if(eventDescription.length() < 1){
-            //Toast.makeText(getApplicationContext(), "Please enter a description", Toast.LENGTH_LONG).show();
             eventDescription = "No Description";
         }
 
@@ -144,8 +124,6 @@ public class createEvent extends FragmentActivity
         JSONArray usersAttending = new JSONArray();
         usersAttending.put(App.getAcct());
         event.put("usersAttending", usersAttending);
-
-        //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 
         Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
         Log.i("DEBUG", "Saving in BG");

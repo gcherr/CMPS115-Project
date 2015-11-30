@@ -81,8 +81,6 @@ public class MapActivity extends AppCompatActivity {
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        // Binds the Javascript interface
-        //myWebView.addJavascriptInterface(new JavaScriptInterface(this), "Android");
         webSettings.setDomStorageEnabled(true);
         myWebView.setWebChromeClient(new WebChromeClient());
     }

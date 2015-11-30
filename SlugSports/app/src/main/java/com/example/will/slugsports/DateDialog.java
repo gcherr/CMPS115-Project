@@ -23,7 +23,6 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     public DateDialog(){
 
-
     }
 
     public void setSport(String s){
@@ -45,20 +44,12 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         d.getDatePicker().setCalendarViewShown(true);
         d.getDatePicker().setSpinnersShown(false);
         d.onDateChanged(d.getDatePicker(),year,month,day);
-
-
         return d;
-
-    }
-
-    public void onDateChanged(DatePicker view, int year, int month, int day){
-
 
     }
 
 
     public void onDateSet(DatePicker view, int year, int month, int day){
-
         String date = day + "/" + (month+1) + "/" + year;
         //txtDate.setText(date);
         out = date;

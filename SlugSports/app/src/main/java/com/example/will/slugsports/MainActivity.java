@@ -24,15 +24,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
-    private ArrayList<String> spList, locList, dayList, hourList;
+    private ArrayList<String> spList, locList;
     private String currentList;
     private ListView myListView;
     private ArrayAdapter<String> arrayAdapter;
     private String LOG_TAG = "DEBUG: ";
     private String chosenSp = "";
     private String chosenLoc = "";
-    private String chosenDay = "";
-    private String chosenHour ="";
     private String chosenCriteria = "";
 
     public String getSp(){
@@ -50,12 +48,8 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().hide();
         spList = new ArrayList<String>();
         locList = new ArrayList<String>();
-        dayList = new ArrayList<String>();
-        hourList = new ArrayList<String>();
         populateSports(spList);
         populateLocs(locList);
-        populateDays(dayList);
-        populateHours(hourList);
         arrayAdapter = new ArrayAdapter<String>(
             this, android.R.layout.simple_list_item_1, spList
         );
@@ -64,15 +58,6 @@ public class MainActivity extends ActionBarActivity {
         //Make each list element clickable
         populateListView(spList, "Sports");
         myListView.setAdapter(arrayAdapter);
-
-        // Enable Local Datastore.
-       // Parse.enableLocalDatastore(this);
-
-       // Parse.initialize(this, "7st18qTMNhNJICNJx1hY5cbk8BzSKB99fKx1qCgP", "zeyvANSw3bh0yLOiPtQJ05052qaKFNIaV7cP83Og");
-
-       // ParseObject testObject = new ParseObject("SlugObject");
-       // testObject.put("Slug", "Sport");
-      //  testObject.saveInBackground();
 
 
     }
@@ -98,21 +83,6 @@ public class MainActivity extends ActionBarActivity {
                 updateChosenView();
                 populateListView(spList, "Sports");
                 break;
-            case "Days":
-                //currentList = "Locations";
-                String[] parts = chosenCriteria.split(":");
-                chosenCriteria = parts[0];
-                updateChosenView();
-                populateListView(locList, "Locations");
-                break;
-            case "Hours":
-                //currentList = "Days";
-                String[] parts2 = chosenCriteria.split(":");
-                chosenCriteria = parts2[0] + ":" + parts2[1];
-                updateChosenView();
-                populateListView(dayList,"Days");
-                break;
-
             default:
                 break;
         }
@@ -174,48 +144,9 @@ public class MainActivity extends ActionBarActivity {
                         d.setSport(chosenSp);
                         FragmentTransaction f = getFragmentManager().beginTransaction();
                         d.show(f, "DatePicker");
-
-
-
-                        //Intent intent1 = new Intent(MainActivity.this, CalendarViewActivity.class);
-
-                        //startActivity(intent1);
-
-                        break;
-
-                    case "Days":
-                        /*
-                        chosenDay = list2.get(position);
-                        currentList = "Hours";
-                        chosenCriteria = chosenSp + " : " + chosenLoc + " : " + list2.get(position);
-
-                        //toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-
-                        populateListView(hourList, "Hours");
-                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-
-                        toast.show();
-                        */
-                        /*
-                        DateDialog d1 = new DateDialog();
-                        FragmentTransaction f1 = getFragmentManager().beginTransaction();
-                        d1.show(f1, "DatePicker");
-                        */
-
-                        break;
-                    /*
-                    case "Hours":
-                        chosenHour = list2.get(position);
-                        chosenCriteria = chosenSp + " : " + chosenLoc + " : " + chosenDay + " : " + list2.get(position);
-                        toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-                        toast.show();
-                        Intent intent = new Intent(MainActivity.this, FoundGames.class);
-
-                        startActivity(intent);
                         break;
                     default:
                         break;
-                    */
                 }
                 updateChosenView();
                 Log.i(LOG_TAG, currentList + " : ");
@@ -264,41 +195,6 @@ public class MainActivity extends ActionBarActivity {
         locList.add("West Tennis Courts");
         locList.add("Other");
 
-    }
-
-    //Populate dayList with the available days
-    private void populateDays(ArrayList<String> dayList){
-        dayList.add("Sunday");
-        dayList.add("Monday");
-        dayList.add("Tuesday");
-        dayList.add("Wednesday");
-        dayList.add("Thursday");
-        dayList.add("Friday");
-        dayList.add("Saturday");
-
-    }
-
-    //Populate hourList with the available hours
-    private void populateHours(ArrayList<String> hourList){
-        hourList.add("6 am");
-        hourList.add("7 am");
-        hourList.add("8 am");
-        hourList.add("9 am");
-        hourList.add("10 am");
-        hourList.add("11 am");
-        hourList.add("12 pm");
-        hourList.add("12 am");
-        hourList.add("1 pm");
-        hourList.add("2 pm");
-        hourList.add("3 pm");
-        hourList.add("4 pm");
-        hourList.add("5 pm");
-        hourList.add("6 pm");
-        hourList.add("7 pm");
-        hourList.add("8 pm");
-        hourList.add("9 pm");
-        hourList.add("10 pm");
-        hourList.add("11 pm");
     }
 
     public void popupMap(View v){
