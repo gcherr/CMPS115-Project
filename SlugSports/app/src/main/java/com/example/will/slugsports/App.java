@@ -33,4 +33,8 @@ public class App extends Application{
     static public String getAcct(){
         return account;
     }
+
+    static public GoogleAccountCredential getCred(){
+        return cred;
+    }
 }

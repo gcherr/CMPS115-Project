@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,11 +24,22 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,14 +56,20 @@ public class FoundGames extends AppCompatActivity {
 
     List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
+    String OPERSloc, OPERSEvents = "";
+
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //
         extras = getIntent().getExtras();
-
+        OPERSloc = extras.getString("location");
         //
         super.onCreate(savedInstanceState);
+
+        progress = new ProgressDialog(this);
+        progress.setMessage("Fetching OPERS data...");
 
         setContentView(R.layout.activity_found_games);
 
@@ -175,4 +194,109 @@ public class FoundGames extends AppCompatActivity {
         });
     }
 
+    public void showOPERSData(View v){
+        new getCalData(App.getCred(), OPERSloc).execute();
+
+
+
+
+
+    }
+
+    public class getCalData extends AsyncTask<Void, Void, List<String>> {
+        private com.google.api.services.calendar.Calendar mService = null;
+        private Exception mLastError = null;
+        private Map<String, String> map;
+        private String loc = "";
+
+        public getCalData(GoogleAccountCredential credential, String location) {
+            HttpTransport transport = AndroidHttp.newCompatibleTransport();
+            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+            mService = new com.google.api.services.calendar.Calendar.Builder(
+                    transport, jsonFactory, credential)
+                    .setApplicationName("Google Calendar API Android Quickstart")
+                    .build();
+            map = new HashMap<String, String>();
+
+            //insert the OPERS calendar data
+            map.put("East Field", "ucsc.edu_7265736f757263652d343432@resource.calendar.google.com");
+            map.put("OPERS Pool", "ucsc.edu_7265736f757263652d343338@resource.calendar.google.com");
+            map.put("East Field House Gym", "ucsc.edu_7265736f757263652d343435@resource.calendar.google.com");
+            map.put("West Gym", "ucsc.edu_7265736f757263652d343535@resource.calendar.google.com");
+        }
+
+        /**
+         * Background task to call Google Calendar API.
+         *
+         * @param params no parameters needed for this task.
+         */
+        @Override
+        protected List<String> doInBackground(Void... params) {
+            try {
+                return getDataFromApi();
+            } catch (Exception e) {
+                mLastError = e;
+                cancel(true);
+                return null;
+            }
+        }
+
+        /**
+         * Fetch a list of the next 10 events from the primary calendar.
+         *
+         * @return List of Strings describing returned events.
+         * @throws IOException
+         */
+        private List<String> getDataFromApi() throws IOException {
+            // List the next 10 events from the primary calendar.
+            DateTime now = new DateTime(System.currentTimeMillis());
+            List<String> eventStrings = new ArrayList<String>();
+            Events events = mService.events().list(map.get(loc))
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            List<Event> items = events.getItems();
+
+            for (Event event : items) {
+                DateTime start = event.getStart().getDateTime();
+                if (start == null) {
+                    // All-day events don't have start times, so just use
+                    // the start date.
+                    start = event.getStart().getDate();
+                }
+                String description = event.getDescription();
+
+                eventStrings.add(
+                        String.format("%s ;%s; (%s)", event.getSummary(), description, start));
+            }
+            return eventStrings;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //mOutputText.setText("");
+            progress.show();
+        }
+
+        @Override
+        protected void onPostExecute(List<String> output) {
+            progress.hide();
+            OPERSEvents = TextUtils.join("\n", output);
+            Toast.makeText(getApplicationContext(), OPERSEvents, Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(getParent())
+                    .setTitle("OPERs events at " + OPERSloc)
+                    .setMessage(OPERSEvents)
+                    .setNegativeButton("Exit", null)
+                    .create().show();
+        }
+
+        @Override
+        protected void onCancelled() {
+            progress.hide();
+        }
+
+    }
 }
