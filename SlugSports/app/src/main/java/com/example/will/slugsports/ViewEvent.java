@@ -129,11 +129,12 @@ public class ViewEvent extends AppCompatActivity {
                     sport = event.getString("sport");
                     title = event.getString("eventName");
                     creatr = event.getString("userName");
-                    pref = event.getInt("numPlayers")+"";
+                    pref = event.getString("numPlayers")+"";
                     join = event.getInt("numJoined")+"";
                     des = event.getString("description");
 
-                    Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewEvent.this, "pref is " + pref, Toast.LENGTH_SHORT).show();
 
                     //works
                     //TextView chosenSport = (TextView) findViewById(R.id.chosenSport);
