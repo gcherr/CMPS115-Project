@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Create Event!"
+            android:text="@string/event_creator"
             android:id="@+id/textView8"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
@@ -143,11 +143,13 @@
                 android:id="@+id/textView13"
                 android:layout_marginRight="20dp" />
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText3" />
         </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText3"
+            android:layout_weight="1" />
 
         <Button
             android:layout_width="wrap_content"
