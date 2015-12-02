@@ -45,6 +45,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,8 +148,8 @@ public class FoundGames extends AppCompatActivity {
         query.whereEqualTo("year", extras.getInt("year"));
 
         query.orderByAscending("AM_PM");
-        query.orderByAscending("hour");
-        query.orderByAscending("minute");
+        query.addAscendingOrder("hour");
+        query.addAscendingOrder("minute");
 
         progressDialog = ProgressDialog.show(FoundGames.this, "",
                 "Fetching available games...", true);
@@ -170,7 +171,8 @@ public class FoundGames extends AppCompatActivity {
                         map = new HashMap<String, String>();
                         Object object = eventList.get(i);
 
-                        String hourString = ((ParseObject) object).getInt("hour")+"";
+                        int hour = ((ParseObject) object).getInt("hour");
+                        String hourString = (hour < 1) ? "12" : hour+"";
                         int minute = ((ParseObject) object).getInt("minute");
                         String minuteString = (minute < 10) ? "0"+minute : ""+minute;
 
@@ -216,10 +218,59 @@ public class FoundGames extends AppCompatActivity {
     public void showOPERSData(View v){
         new getCalData(App.getCred(), OPERSloc).execute();
 
+    }
+
+    public void viewMyEvents(View v){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+        String[] user= {App.getAcct()};
+        query.whereContainedIn("usersAttending", Arrays.asList(user));
+        query.orderByAscending("year");
+        query.addAscendingOrder("month");
+        query.addAscendingOrder("day");
+        query.addAscendingOrder("AM_PM");
+        query.addAscendingOrder("hour");
+        query.addAscendingOrder("minute");
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> eventList, ParseException e) {
+                if (e == null && eventList.size() > 0) {
+                    String s = "";
+                    for (int i = 0; i < eventList.size(); i++) {
+                        Object object = eventList.get(i);
+
+                        int hour = ((ParseObject) object).getInt("hour");
+                        String hourString = (hour < 1) ? "12" : hour+"";
+                        int minute = ((ParseObject) object).getInt("minute");
+                        String minuteString = (minute < 10) ? "0"+minute : ""+minute;
+
+                        String eventName = ((ParseObject) object).getString("eventName");
+                        String userName = ((ParseObject) object).getString("userName");
+                        String time = ((hourString + ":" + minuteString + " " +
+                                ((ParseObject) object).getString("AM_PM")));
+                        String sport = ((ParseObject) object).getString("sport");
+                        String loc = ((ParseObject) object).getString("location");
+                        String day = ( ((ParseObject) object).getInt("month") + "/" +
+                                ((ParseObject) object).getInt("day") + "/" +
+                                ((ParseObject) object).getInt("year") );
 
 
+                        s += eventName + "\nCreator: " + userName + "\n" +
+                            "Sport: " + sport + "\nLocation: " + loc + "\n" +
+                            day + " at " + time + "\n\n" ;
+                    }
 
+                    new AlertDialog.Builder(FoundGames.this)
+                            .setTitle("Your Games:")
+                            .setMessage(s)
+                            .setNegativeButton(android.R.string.no, null)
+                            .create().show();
 
+                } else {
+                    Log.i("DEBUG", "No Events on day");
+                    Toast.makeText(FoundGames.this, "No events found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public class getCalData extends AsyncTask<Void, Void, List<String>> {

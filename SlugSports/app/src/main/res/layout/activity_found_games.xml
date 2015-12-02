@@ -13,18 +13,18 @@
         android:text="@string/create_text"
         android:id="@+id/button"
         android:onClick="createEvent"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/textView"
         android:layout_alignRight="@+id/listView2"
-        android:layout_alignEnd="@+id/listView2"
-        android:layout_marginTop="18dp" />
+        android:layout_alignEnd="@+id/listView2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/available"
         android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
 
     <ListView
         android:scrollbars="none"
@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView2"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/textView3"
-        android:layout_below="@+id/button" />
+        android:layout_below="@+id/button"
+        android:layout_alignParentBottom="true" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -48,11 +48,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/view_events"
         android:id="@+id/button2"
-        android:layout_alignTop="@+id/button"
+        android:onClick="viewMyEvents"
+        android:layout_above="@+id/listView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="showOPERSData" />
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
 

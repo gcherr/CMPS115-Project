@@ -25,6 +25,7 @@ import com.parse.ParseQuery;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -150,6 +151,12 @@ public class LoginTest extends Activity {
         manual = new Button(this);
         manual.setText("User Manual");
         manual.setVisibility(View.VISIBLE);
+        manual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewMyEvents(v);
+            }
+        });
 
         activityLayout.addView(signIn);
         activityLayout.addView(nextActivity);
@@ -193,78 +200,55 @@ public class LoginTest extends Activity {
         }
     }
 
-    public void viewMyEvents(){
-
-
+    public void viewMyEvents(View v){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
-        query.whereEqualTo("sport", extras.getString("sport"));
-        query.whereEqualTo("location", extras.getString("location"));
-        Log.i("DEBUG", extras.getString("location"));
-        query.whereEqualTo("day", extras.getInt("day"));
-        query.whereEqualTo("month", extras.getInt("month"));
-        query.whereEqualTo("year", extras.getInt("year"));
-
-        query.orderByAscending("AM_PM");
-        query.orderByAscending("hour");
-        query.orderByAscending("minute");
-
-        progressDialog = ProgressDialog.show(LoginTest.this, "",
-                "Fetching available games...", true);
-
-        //final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>{};
-        //final ArrayList<String> arrayList = new ArrayList<String>();
+        String[] user= {App.getAcct()};
+        query.whereContainedIn("usersAttending", Arrays.asList(user));
+        query.orderByAscending("year");
+        query.addAscendingOrder("month");
+        query.addAscendingOrder("day");
+        query.addAscendingOrder("AM_PM");
+        query.addAscendingOrder("hour");
+        query.addAscendingOrder("minute");
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> eventList, ParseException e) {
                 if (e == null && eventList.size() > 0) {
-                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: " +
-                            eventList.get(0).getString("eventName"));
-                    CharSequence c = "Retrieved " + eventList.size() + " event(s).";
-                    Toast.makeText(LoginTest.this, c, Toast.LENGTH_SHORT).show();
-                    Map<String, String> map;
-                    ArrayList<String> eventNames = new ArrayList<String>();
-                    ArrayList<String> Ids = new ArrayList<String>();
-                    ArrayList<String> userNames = new ArrayList<String>();
-                    ArrayList<String> eventTimes = new ArrayList<String>();
-
-                    for(int i = 0; i < eventList.size(); i++){
+                    String s = "";
+                    for (int i = 0; i < eventList.size(); i++) {
                         Object object = eventList.get(i);
 
-                        String hourString = ((ParseObject) object).getInt("hour")+"";
+                        int hour = ((ParseObject) object).getInt("hour");
+                        String hourString = (hour < 1) ? "12" : hour+"";
                         int minute = ((ParseObject) object).getInt("minute");
                         String minuteString = (minute < 10) ? "0"+minute : ""+minute;
 
+                        String eventName = ((ParseObject) object).getString("eventName");
+                        String userName = ((ParseObject) object).getString("userName");
+                        String time = ((hourString + ":" + minuteString + " " +
+                                ((ParseObject) object).getString("AM_PM")));
+                        String sport = ((ParseObject) object).getString("sport");
+                        String loc = ((ParseObject) object).getString("location");
+                        String day = ( ((ParseObject) object).getInt("month") + "/" +
+                                ((ParseObject) object).getInt("day") + "/" +
+                                ((ParseObject) object).getInt("year") );
 
 
-                        JSONArray usersAttend = ((ParseObject) object).getJSONArray("usersAttending");
-                        for(int j = 0; j < usersAttend.length(); j++){
-                            try {
-                                if(App.getAcct().equalsIgnoreCase(usersAttend.getJSONObject(j).toString())) {
-
-                                    eventNames.add(((ParseObject) object).getString("eventName"));
-                                    Ids.add(((ParseObject) object).getObjectId());
-                                    userNames.add(((ParseObject) object).getString("userName"));
-                                    eventTimes.add(hourString + ":" + minuteString + " " +
-                                            ((ParseObject) object).getString("AM_PM"));
-                                }
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-
+                        s += eventName + "\nCreator: " + userName + "\n" +
+                                "Sport: " + sport + "\nLocation: " + loc + "\n" +
+                                day + " at " + time + "\n\n" ;
                     }
 
-
-                    extras.putStringArrayList("eventNames",eventNames);
-                    extras.putStringArrayList("Ids",Ids);
-                    extras.putStringArrayList("userNames",userNames);
-                    extras.putStringArrayList("eventTimes",eventTimes);
+                    new AlertDialog.Builder(LoginTest.this)
+                            .setTitle("Your Games:")
+                            .setMessage(s)
+                            .setNegativeButton(android.R.string.no, null)
+                            .create().show();
 
                 } else {
                     Log.i("DEBUG", "No Events on day");
                     Toast.makeText(LoginTest.this, "No events found", Toast.LENGTH_SHORT).show();
                 }
-                progressDialog.dismiss();
             }
         });
     }
