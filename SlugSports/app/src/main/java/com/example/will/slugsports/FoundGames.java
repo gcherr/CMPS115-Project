@@ -216,7 +216,13 @@ public class FoundGames extends AppCompatActivity {
     }
 
     public void showOPERSData(View v){
-        new getCalData(App.getCred(), OPERSloc).execute();
+        if(OPERSloc.equals("East Field") || OPERSloc.equals("OPERS Pool") ||
+                OPERSloc.equals("East Field House Gym") || OPERSloc.equals("West Gym")) {
+            new getCalData(App.getCred(), OPERSloc).execute();
+        } else{
+            Toast.makeText(FoundGames.this, "No OPERS calendar data for this location",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 
