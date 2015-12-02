@@ -35,9 +35,13 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -160,6 +164,7 @@ public class FoundGames extends AppCompatActivity {
                     CharSequence c = "Retrieved " + eventList.size() + " event(s).";
                     Toast.makeText(FoundGames.this, c, Toast.LENGTH_SHORT).show();
                     Map<String, String> map;
+                    ArrayList<String> userEventNames = new ArrayList<String>();
 
                     for(int i = 0; i < eventList.size(); i++){
                         map = new HashMap<String, String>();
@@ -175,6 +180,18 @@ public class FoundGames extends AppCompatActivity {
                         map.put("time", (hourString + ":" + minuteString + " " +
                                 ((ParseObject) object).getString("AM_PM")));
                         list.add(map);
+
+                        JSONArray usersAttend = ((ParseObject) object).getJSONArray("usersAttending");
+                        for(int j = 0; j < usersAttend.length(); j++){
+                            try {
+                                if(App.getAcct().equalsIgnoreCase(
+                                        usersAttend.getJSONObject(j).toString()))
+                                    userEventNames.add(((ParseObject) object).getString("eventName"));
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+
                     }
 
                     SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
@@ -183,6 +200,8 @@ public class FoundGames extends AppCompatActivity {
                             );
 
                     myListView.setAdapter(adapter);
+
+                    extras.putStringArrayList("userEventNames",userEventNames);
 
 
                 } else {

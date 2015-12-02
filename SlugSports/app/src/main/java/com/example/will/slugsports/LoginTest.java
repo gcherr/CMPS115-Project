@@ -17,6 +17,10 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.client.util.DateTime;
 
 import com.google.api.services.calendar.model.*;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -32,25 +36,34 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class LoginTest extends Activity {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     ProgressDialog mProgress;
+    ProgressDialog progressDialog;
+    Bundle extras;
 
     //Added for slugsports
     Button nextActivity;
@@ -178,6 +191,82 @@ public class LoginTest extends Activity {
             mOutputText.setText("Google Play Services required: " +
                     "after installing, close and relaunch this app.");
         }
+    }
+
+    public void viewMyEvents(){
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+        query.whereEqualTo("sport", extras.getString("sport"));
+        query.whereEqualTo("location", extras.getString("location"));
+        Log.i("DEBUG", extras.getString("location"));
+        query.whereEqualTo("day", extras.getInt("day"));
+        query.whereEqualTo("month", extras.getInt("month"));
+        query.whereEqualTo("year", extras.getInt("year"));
+
+        query.orderByAscending("AM_PM");
+        query.orderByAscending("hour");
+        query.orderByAscending("minute");
+
+        progressDialog = ProgressDialog.show(LoginTest.this, "",
+                "Fetching available games...", true);
+
+        //final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>{};
+        //final ArrayList<String> arrayList = new ArrayList<String>();
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> eventList, ParseException e) {
+                if (e == null && eventList.size() > 0) {
+                    Log.i("DEBUG", "Retrieved " + eventList.size() + " event. Event name: " +
+                            eventList.get(0).getString("eventName"));
+                    CharSequence c = "Retrieved " + eventList.size() + " event(s).";
+                    Toast.makeText(LoginTest.this, c, Toast.LENGTH_SHORT).show();
+                    Map<String, String> map;
+                    ArrayList<String> eventNames = new ArrayList<String>();
+                    ArrayList<String> Ids = new ArrayList<String>();
+                    ArrayList<String> userNames = new ArrayList<String>();
+                    ArrayList<String> eventTimes = new ArrayList<String>();
+
+                    for(int i = 0; i < eventList.size(); i++){
+                        Object object = eventList.get(i);
+
+                        String hourString = ((ParseObject) object).getInt("hour")+"";
+                        int minute = ((ParseObject) object).getInt("minute");
+                        String minuteString = (minute < 10) ? "0"+minute : ""+minute;
+
+
+
+                        JSONArray usersAttend = ((ParseObject) object).getJSONArray("usersAttending");
+                        for(int j = 0; j < usersAttend.length(); j++){
+                            try {
+                                if(App.getAcct().equalsIgnoreCase(usersAttend.getJSONObject(j).toString())) {
+
+                                    eventNames.add(((ParseObject) object).getString("eventName"));
+                                    Ids.add(((ParseObject) object).getObjectId());
+                                    userNames.add(((ParseObject) object).getString("userName"));
+                                    eventTimes.add(hourString + ":" + minuteString + " " +
+                                            ((ParseObject) object).getString("AM_PM"));
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+
+                    }
+
+
+                    extras.putStringArrayList("eventNames",eventNames);
+                    extras.putStringArrayList("Ids",Ids);
+                    extras.putStringArrayList("userNames",userNames);
+                    extras.putStringArrayList("eventTimes",eventTimes);
+
+                } else {
+                    Log.i("DEBUG", "No Events on day");
+                    Toast.makeText(LoginTest.this, "No events found", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+        });
     }
 
     /**
