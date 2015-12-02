@@ -49,7 +49,7 @@ import java.util.Map;
 public class FoundGames extends AppCompatActivity {
 
     private ArrayAdapter<String> arrayAdapter;
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog, progress;
     Bundle extras;
     final ArrayList<String> arrayList = new ArrayList<String>();
     ListView myListView;
@@ -57,8 +57,6 @@ public class FoundGames extends AppCompatActivity {
     List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
     String OPERSloc, OPERSEvents = "";
-
-    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,11 +194,6 @@ public class FoundGames extends AppCompatActivity {
 
     public void showOPERSData(View v){
         new getCalData(App.getCred(), OPERSloc).execute();
-
-
-
-
-
     }
 
     public class getCalData extends AsyncTask<Void, Void, List<String>> {
@@ -224,7 +217,7 @@ public class FoundGames extends AppCompatActivity {
             map.put("OPERS Pool", "ucsc.edu_7265736f757263652d343338@resource.calendar.google.com");
             map.put("East Field House Gym", "ucsc.edu_7265736f757263652d343435@resource.calendar.google.com");
             map.put("West Gym", "ucsc.edu_7265736f757263652d343535@resource.calendar.google.com");
-        }
+    }
 
         /**
          * Background task to call Google Calendar API.

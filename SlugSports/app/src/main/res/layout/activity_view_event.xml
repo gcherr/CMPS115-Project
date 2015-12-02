@@ -13,8 +13,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/chosenSport"
-        android:layout_marginTop="27dp"
-        android:layout_below="@+id/gameCreator"
+        android:layout_below="@+id/joinGame"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -61,41 +60,39 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/PreferredNum"
-        android:layout_above="@+id/desc"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="60dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
         android:id="@+id/NumJoined"
-        android:layout_alignTop="@+id/PreferredNum"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/chosenTime"
+        android:layout_alignRight="@+id/view"
+        android:layout_alignEnd="@+id/view" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/desc"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/NumJoined"
-        android:layout_alignEnd="@+id/NumJoined" />
+        android:layout_marginTop="32dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Join"
         android:id="@+id/joinGame"
-        android:layout_alignParentTop="true"
+        android:onClick="joinEvent"
+        android:layout_below="@+id/gameCreator"
         android:layout_alignRight="@+id/NumJoined"
-        android:layout_alignEnd="@+id/NumJoined"
-        android:onClick="joinEvent" />
+        android:layout_alignEnd="@+id/NumJoined" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"
+        android:id="@+id/view"
+        android:layout_below="@+id/chosenTime"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="58dp" />
 
 </RelativeLayout>

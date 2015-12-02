@@ -1,5 +1,6 @@
 package com.example.will.slugsports;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,27 +23,36 @@ public class ViewEvent extends AppCompatActivity {
 
     Bundle bundle;
     String objectId;
-    ParseObject currentGame = null;
-    String sport,title,creatr,pref,join,des = "";
+    String sport,title,creatr,pref,join,des,date,time = "";
 
-    TextView chosenSport, gameTitle, creator, preferred, joined, desc;
+    TextView chosenSport, gameTitle, creator, joined, desc, eventDay, eventTime;
+    Button joinButton;
+
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
 
+        progress = new ProgressDialog(this);
+
+
         chosenSport = (TextView) findViewById(R.id.chosenSport);
         gameTitle = (TextView) findViewById(R.id.gameTitle);
         creator = (TextView) findViewById(R.id.gameCreator);
-        preferred = (TextView) findViewById(R.id.PreferredNum);
         joined = (TextView) findViewById(R.id.NumJoined);
         desc = (TextView) findViewById(R.id.desc);
+        eventDay = (TextView) findViewById(R.id.chosenDay);
+        eventTime = (TextView) findViewById(R.id.chosenTime);
+
+        joinButton = (Button) findViewById(R.id.joinGame);
 
         bundle = getIntent().getExtras();
         objectId = bundle.getString("objectId");
-        findGame();
+        initializeGame();
         //setFields();
+
     }
 
     public void setFields(){
@@ -57,9 +67,12 @@ public class ViewEvent extends AppCompatActivity {
         chosenSport.setText(sport);
         gameTitle.setText(title);
         creator.setText(creatr);
-        preferred.setText(pref);
-        joined.setText(join);
+        //preferred.setText(pref);
+        joined.setText("Players joined:\n" + join + "/" + pref);
         desc.setText(des);
+        eventDay.setText(date);
+        eventTime.setText(time);
+
 
         //gameTitle.setText(currentGame.getString("eventName"));
         //creator.setText(currentGame.getString("userName"));
@@ -71,8 +84,6 @@ public class ViewEvent extends AppCompatActivity {
     }
 
     public void joinEvent(View v){
-
-        final Button button = (Button) findViewById(R.id.joinGame);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
 
@@ -101,17 +112,15 @@ public class ViewEvent extends AppCompatActivity {
                     if(!alreadyJoined) {
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
                         event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));
-
+                        joinButton.setText("Un-join");
                         Toast.makeText(ViewEvent.this, "Joined event", Toast.LENGTH_SHORT).show();
-                        button.setText("Un-Join");
                     }
 
                     else{
                         event.put("numJoined", event.getNumber("numJoined").intValue() - 1);
                         event.removeAll("usersAttending", Arrays.asList(App.getAcct()));
-
+                        joinButton.setText("Join");
                         Toast.makeText(ViewEvent.this, "Unjoined event", Toast.LENGTH_SHORT).show();
-                        button.setText("Join");
                     }
                     event.saveInBackground();
                 }
@@ -119,39 +128,73 @@ public class ViewEvent extends AppCompatActivity {
         });
     }
 
-    public void findGame() {
+    public void initializeGame() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+
+        progress = progress.show(ViewEvent.this, "",
+                "Fetching event data...", true);
 
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
             public void done(ParseObject event, ParseException e) {
-                if (e == null) {
-                    Toast.makeText(ViewEvent.this, event.getString("sport"), Toast.LENGTH_SHORT).show();
-                    sport = event.getString("sport");
-                    title = event.getString("eventName");
-                    creatr = event.getString("userName");
-                    pref = event.getString("numPlayers")+"";
-                    join = event.getInt("numJoined")+"";
-                    des = event.getString("description");
 
-                    //Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(ViewEvent.this, "pref is " + pref, Toast.LENGTH_SHORT).show();
+                boolean alreadyJoined = false;
+
+                JSONArray usersAttending = event.getJSONArray("usersAttending");
+
+                for(int i = 0; i < usersAttending.length(); i++) {
+                    try {
+
+                        String user = usersAttending.get(i).toString();
+                        if(user.equalsIgnoreCase(App.getAcct())) alreadyJoined = true;
+
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                if(alreadyJoined){
+                    joinButton.setText("Un-join");
+                }
+                else{
+                    joinButton.setText("Join");
+                }
+
+                if (e == null){
+                    sport = "Sport: " + event.getString("sport");
+                    title = event.getString("eventName");
+                    creatr = "By: " + event.getString("userName");
+                    pref = event.getString("numPlayers");
+                    join = event.getInt("numJoined")+"";
+                    des = "Description: \n" + event.getString("description");
+                    date = "Date: " + event.getInt("month") + "/" + event.getInt("day")
+                            + "/" + event.getInt("year");
+                    time = "Time: " +
+                            ((event.getInt("hour") > 1) ? event.getInt("hour") : 12) + ":" +
+                            ((event.getInt("minute") > 10) ? event.getInt("minute") : "0"+(event.getInt("minute"))) +
+                            " " + event.getString("AM_PM");
+
+                    Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
 
                     //works
                     //TextView chosenSport = (TextView) findViewById(R.id.chosenSport);
                     //chosenSport.setText(sport);
 
                     setFields();
-                    //ti
-                    //cr
-                    //pre
-                    //join
-                    //des
+                } else{
+
                 }
-                else{
-                    Log.i("DEBUG", "Parse Error");
-                    Toast.makeText(ViewEvent.this, "Parse Error", Toast.LENGTH_SHORT).show();
+
+                try {
+                    Thread.sleep(500);                 //1000 milliseconds is one second.
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
                 }
+
+                progress.dismiss();
+
             }
+
         });
+
     }
 }
