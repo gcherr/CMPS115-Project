@@ -478,5 +478,7 @@ public class LoginTest extends Activity {
                 mOutputText.setText("Request cancelled.");
             }
         }
+
     }
+
 }

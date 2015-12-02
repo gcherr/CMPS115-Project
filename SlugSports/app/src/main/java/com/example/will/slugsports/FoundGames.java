@@ -36,17 +36,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class FoundGames extends AppCompatActivity {
 
     private ArrayAdapter<String> arrayAdapter;
-    ProgressDialog progressDialog, progress;
+    ProgressDialog progressDialog, progress, googleProg;
     Bundle extras;
     final ArrayList<String> arrayList = new ArrayList<String>();
     ListView myListView;
@@ -65,6 +68,9 @@ public class FoundGames extends AppCompatActivity {
 
         progress = new ProgressDialog(this);
         progress.setMessage("Fetching OPERS data...");
+
+        googleProg = new ProgressDialog(this);
+        googleProg.setMessage("Calling Google Calendar API ...");
 
         setContentView(R.layout.activity_found_games);
 
@@ -291,6 +297,7 @@ public class FoundGames extends AppCompatActivity {
                     .setApplicationName("Google Calendar API Android Quickstart")
                     .build();
             map = new HashMap<String, String>();
+            loc = location;
 
             //insert the OPERS calendar data
             map.put("East Field", "ucsc.edu_7265736f757263652d343432@resource.calendar.google.com");
@@ -324,10 +331,13 @@ public class FoundGames extends AppCompatActivity {
         private List<String> getDataFromApi() throws IOException {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
+            long oneDay = (long) 1000.0 * 60 * 60 * 24;
+            DateTime tomorrow = new DateTime(System.currentTimeMillis()+oneDay);
             List<String> eventStrings = new ArrayList<String>();
             Events events = mService.events().list(map.get(loc))
                     .setMaxResults(10)
                     .setTimeMin(now)
+                    .setTimeMax(tomorrow)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
@@ -340,10 +350,23 @@ public class FoundGames extends AppCompatActivity {
                     // the start date.
                     start = event.getStart().getDate();
                 }
-                String description = event.getDescription();
+                DateTime end = event.getEnd().getDateTime();
+                if (end == null) {
+                    // All-day events don't have start times, so just use
+                    // the start date.
+                    end = event.getEnd().getDate();
+                }
 
+/*
+                SimpleDateFormat outFormatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                outFormatter.setTimeZone(TimeZone.getTimeZone("UTC-08:00"));
+                String startS = outFormatter.format(start);
+                String endS = outFormatter.format(end);
+
+                Toast.makeText(FoundGames.this, startS + endS, Toast.LENGTH_SHORT).show();
+*/
                 eventStrings.add(
-                        String.format("%s ;%s; (%s)", event.getSummary(), description, start));
+                        String.format("%s \n%s - %s\n", event.getSummary(), start, end));
             }
             return eventStrings;
         }
@@ -351,16 +374,16 @@ public class FoundGames extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             //mOutputText.setText("");
-            progress.show();
+            //progress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            progress.hide();
+            //progress.hide();
             OPERSEvents = TextUtils.join("\n", output);
             Toast.makeText(getApplicationContext(), OPERSEvents, Toast.LENGTH_SHORT).show();
-            new AlertDialog.Builder(getParent())
-                    .setTitle("OPERs events at " + OPERSloc)
+            new AlertDialog.Builder(FoundGames.this)
+                    .setTitle("Events on selected day at " + OPERSloc)
                     .setMessage(OPERSEvents)
                     .setNegativeButton("Exit", null)
                     .create().show();
@@ -368,7 +391,7 @@ public class FoundGames extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            progress.hide();
+            //progress.hide();
         }
 
     }
