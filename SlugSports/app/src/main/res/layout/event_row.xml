@@ -47,10 +47,22 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Small Text"
-                android:id="@+id/userid"
+                android:id="@+id/playerCount"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/userid"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/playerCount"
+                android:layout_toStartOf="@+id/playerCount"
+                android:layout_marginRight="88dp"
+                android:layout_marginEnd="88dp"
                 android:visibility="invisible" />
         </RelativeLayout>
 

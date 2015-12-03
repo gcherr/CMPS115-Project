@@ -107,8 +107,6 @@ public class ViewEvent extends AppCompatActivity {
                 }
 
                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
                     if(!alreadyJoined) {
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
                         event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));

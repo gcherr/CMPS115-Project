@@ -171,12 +171,15 @@ public class FoundGames extends AppCompatActivity {
                         String hourString = (hour < 1) ? "12" : hour+"";
                         int minute = ((ParseObject) object).getInt("minute");
                         String minuteString = (minute < 10) ? "0"+minute : ""+minute;
+                        String players = ((ParseObject) object).getInt("numJoined") + "/" +
+                                ((ParseObject) object).getString("numPlayers");
 
                         map.put("eventName", ((ParseObject) object).getString("eventName"));
                         map.put("id", ((ParseObject) object).getObjectId());
                         map.put("username", ((ParseObject) object).getString("userName"));
                         map.put("time", (hourString + ":" + minuteString + " " +
                                 ((ParseObject) object).getString("AM_PM")));
+                        map.put("playerCount", players+ " players");
                         list.add(map);
 
                         JSONArray usersAttend = ((ParseObject) object).getJSONArray("usersAttending");
@@ -193,8 +196,8 @@ public class FoundGames extends AppCompatActivity {
                     }
 
                     SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
-                            R.layout.event_row, new String[] {"eventName", "id", "username", "time"},
-                            new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
+                            R.layout.event_row, new String[] {"eventName", "id", "username", "time", "playerCount"},
+                            new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time, R.id.playerCount}
                             );
 
                     myListView.setAdapter(adapter);
