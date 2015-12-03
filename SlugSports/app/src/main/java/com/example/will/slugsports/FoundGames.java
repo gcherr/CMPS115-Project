@@ -27,7 +27,6 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -36,14 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 
 public class FoundGames extends AppCompatActivity {
@@ -113,15 +109,7 @@ public class FoundGames extends AppCompatActivity {
         super.onResume();
 
         //clear the list so events don't accumulate
-        list.clear();
-        myListView = (ListView) findViewById(R.id.listView2);
-        SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
-                R.layout.event_row, new String[] {"eventName", "id", "username", "time"},
-                new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
-        );
-        myListView.setAdapter(adapter);
-
-        fetchParse();
+        parseRefresh(findViewById(android.R.id.content));
     }
 
     public void createEvent(View v){
@@ -131,6 +119,18 @@ public class FoundGames extends AppCompatActivity {
         intent.putExtras(extras);
 
         startActivity(intent);
+    }
+
+    public void parseRefresh(View v){
+        //clear the list so events don't accumulate
+        list.clear();
+        myListView = (ListView) findViewById(R.id.listView2);
+        SimpleAdapter adapter = new SimpleAdapter(FoundGames.this, list,
+                R.layout.event_row, new String[] {"eventName", "id", "username", "time"},
+                new int[] {R.id.eventName, R.id.userid, R.id.username, R.id.time}
+        );
+        myListView.setAdapter(adapter);
+        fetchParse();
     }
 
     public void fetchParse(){
@@ -313,6 +313,7 @@ public class FoundGames extends AppCompatActivity {
          */
         @Override
         protected List<String> doInBackground(Void... params) {
+
             try {
                 return getDataFromApi();
             } catch (Exception e) {
@@ -332,12 +333,12 @@ public class FoundGames extends AppCompatActivity {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             long oneDay = (long) 1000.0 * 60 * 60 * 24;
-            DateTime tomorrow = new DateTime(System.currentTimeMillis()+oneDay);
+            DateTime upcomingWeek = new DateTime(System.currentTimeMillis()+(oneDay));
             List<String> eventStrings = new ArrayList<String>();
             Events events = mService.events().list(map.get(loc))
                     .setMaxResults(10)
                     .setTimeMin(now)
-                    .setTimeMax(tomorrow)
+                    .setTimeMax(upcomingWeek)
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
                     .execute();
@@ -381,9 +382,9 @@ public class FoundGames extends AppCompatActivity {
         protected void onPostExecute(List<String> output) {
             //progress.hide();
             OPERSEvents = TextUtils.join("\n", output);
-            Toast.makeText(getApplicationContext(), OPERSEvents, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), OPERSEvents, Toast.LENGTH_SHORT).show();
             new AlertDialog.Builder(FoundGames.this)
-                    .setTitle("Events on selected day at " + OPERSloc)
+                    .setTitle("Upcoming events at " + OPERSloc)
                     .setMessage(OPERSEvents)
                     .setNegativeButton("Exit", null)
                     .create().show();

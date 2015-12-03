@@ -310,7 +310,7 @@ public class LoginTest extends Activity {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
-                new MakeRequestTask(mCredential).execute();
+                //new MakeRequestTask(mCredential).execute();
                 Toast.makeText(LoginTest.this, mCredential.getSelectedAccountName(), Toast.LENGTH_SHORT).show();
                 App.setCred(mCredential);
                 App.setAcct();

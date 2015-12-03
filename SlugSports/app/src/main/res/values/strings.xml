@@ -17,7 +17,8 @@
     <string name="create">Create</string>
     <string name="parseInit">No</string>
     <string name="select_time">Time:</string>
-    <string name="show_opers">OPERS events for selected day and location</string>
+    <string name="show_opers">Upcoming OPERS events for location</string>
+    <string name="refresh">Refresh</string>
 
     <string name="join_button">Join</string>
     <string name="view_events">Your Games</string>
