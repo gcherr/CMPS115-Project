@@ -362,9 +362,9 @@ public class FoundGames extends AppCompatActivity {
                 outFormatter.setTimeZone(TimeZone.getTimeZone("UTC-08:00"));
                 String startS = outFormatter.format(start);
                 String endS = outFormatter.format(end);
-
-                Toast.makeText(FoundGames.this, startS + endS, Toast.LENGTH_SHORT).show();
 */
+                //Toast.makeText(FoundGames.this, startS + endS, Toast.LENGTH_SHORT).show();
+
                 eventStrings.add(
                         String.format("%s \n%s - %s\n", event.getSummary(), start, end));
             }

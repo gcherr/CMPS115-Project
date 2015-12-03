@@ -26,6 +26,7 @@ public class MapActivity extends AppCompatActivity {
 
     Spinner locs ;
     String[] facilities = {
+            "<Select a location on campus>",
             "East Field",
             "East Field House Dance Studio",
             "East Field House Gym",
@@ -61,7 +62,14 @@ public class MapActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String replaced = parent.getItemAtPosition(position).toString().replace(' ', '-');
-                myWebView.loadUrl(baseUrl+replaced);
+                if (position != 0) {
+                    myWebView.loadUrl(baseUrl + replaced);
+                    myWebView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    myWebView.setVisibility(View.GONE);
+                    myWebView.loadUrl("http://maps.ucsc.edu/");
+                }
             }
 
             @Override
@@ -78,6 +86,9 @@ public class MapActivity extends AppCompatActivity {
     private void initWebview(){
         myWebView = (WebView) findViewById(R.id.webView);
         myWebView.setWebViewClient(new WebViewClient());
+
+        myWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        myWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
