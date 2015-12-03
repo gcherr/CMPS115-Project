@@ -336,10 +336,9 @@ public class FoundGames extends AppCompatActivity {
             // List the next 10 events from the primary calendar.
             DateTime now = new DateTime(System.currentTimeMillis());
             long oneDay = (long) 1000.0 * 60 * 60 * 24;
-            DateTime upcomingWeek = new DateTime(System.currentTimeMillis()+(oneDay));
+            DateTime upcomingWeek = new DateTime(System.currentTimeMillis()+(oneDay*7));
             List<String> eventStrings = new ArrayList<String>();
             Events events = mService.events().list(map.get(loc))
-                    .setMaxResults(10)
                     .setTimeMin(now)
                     .setTimeMax(upcomingWeek)
                     .setOrderBy("startTime")

@@ -95,7 +95,7 @@ public class LoginTest extends Activity {
         activityLayout.setLayoutParams(lp);
         activityLayout.setOrientation(LinearLayout.VERTICAL);
         activityLayout.setPadding(16, 16, 16, 16);
-        activityLayout.setBackground(getResources().getDrawable(R.drawable.posis_night));
+        activityLayout.setBackground(getResources().getDrawable(R.drawable.opers));
 
         ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -125,7 +125,7 @@ public class LoginTest extends Activity {
         });
 
         findGames = new Button(this);
-        findGames.setText("Find a Game");
+        findGames.setText("Find/Create a Game");
         findGames.setVisibility(View.VISIBLE);
 
         findGames.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +137,7 @@ public class LoginTest extends Activity {
         });
 
         maps = new Button(this);
-        maps.setText("Find a Locations on Campus");
+        maps.setText("Find a Location on Campus");
         maps.setVisibility(View.VISIBLE);
 
         maps.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +149,7 @@ public class LoginTest extends Activity {
         });
 
         manual = new Button(this);
-        manual.setText("User Manual");
+        manual.setText("View My Events");
         manual.setVisibility(View.VISIBLE);
         manual.setOnClickListener(new View.OnClickListener() {
             @Override
