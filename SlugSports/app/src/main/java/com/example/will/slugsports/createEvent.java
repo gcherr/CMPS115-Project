@@ -133,12 +133,18 @@ public class createEvent extends FragmentActivity
             usersAttending.put(App.getAcct());
             event.put("usersAttending", usersAttending);
 
-            Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
             Log.i("DEBUG", "Saving in BG");
             //event.saveInBackground();
 
             event.saveInBackground();
             Log.i("DEBUG", "Saved in BG");
+
+            try {
+                Thread.sleep(1000);                 //1000 milliseconds is one second.
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
 
             super.onBackPressed();
 
