@@ -88,7 +88,7 @@ public class FoundGames extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(FoundGames.this, idList.get(position), Toast.LENGTH_SHORT).show();
-                Toast.makeText(FoundGames.this, list.get(position).get("id"), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FoundGames.this, list.get(position).get("id"), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(FoundGames.this, ViewEvent.class);
 
@@ -360,6 +360,9 @@ public class FoundGames extends AppCompatActivity {
                     end = event.getEnd().getDate();
                 }
 
+                String sTemp = String.format("%s", start);
+                String[] startDate = sTemp.split("T");
+
 /*
                 SimpleDateFormat outFormatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 outFormatter.setTimeZone(TimeZone.getTimeZone("UTC-08:00"));
@@ -369,7 +372,7 @@ public class FoundGames extends AppCompatActivity {
                 //Toast.makeText(FoundGames.this, startS + endS, Toast.LENGTH_SHORT).show();
 
                 eventStrings.add(
-                        String.format("%s \n%s - %s\n", event.getSummary(), start, end));
+                        String.format("%s\n%s\n---------------------------------------", event.getSummary(), startDate[0]));
             }
             return eventStrings;
         }

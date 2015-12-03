@@ -29,6 +29,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -200,6 +201,19 @@ public class LoginTest extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        System.exit(0);
+                    }
+                }).create().show();
+    }
+
     public void viewMyEvents(View v){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         String[] user= {App.getAcct()};
@@ -219,9 +233,9 @@ public class LoginTest extends Activity {
                         Object object = eventList.get(i);
 
                         int hour = ((ParseObject) object).getInt("hour");
-                        String hourString = (hour < 1) ? "12" : hour+"";
+                        String hourString = (hour < 1) ? "12" : hour + "";
                         int minute = ((ParseObject) object).getInt("minute");
-                        String minuteString = (minute < 10) ? "0"+minute : ""+minute;
+                        String minuteString = (minute < 10) ? "0" + minute : "" + minute;
 
                         String eventName = ((ParseObject) object).getString("eventName");
                         String userName = ((ParseObject) object).getString("userName");
@@ -229,14 +243,14 @@ public class LoginTest extends Activity {
                                 ((ParseObject) object).getString("AM_PM")));
                         String sport = ((ParseObject) object).getString("sport");
                         String loc = ((ParseObject) object).getString("location");
-                        String day = ( ((ParseObject) object).getInt("month") + "/" +
+                        String day = (((ParseObject) object).getInt("month") + "/" +
                                 ((ParseObject) object).getInt("day") + "/" +
-                                ((ParseObject) object).getInt("year") );
+                                ((ParseObject) object).getInt("year"));
 
 
                         s += eventName + "\nCreator: " + userName + "\n" +
                                 "Sport: " + sport + "\nLocation: " + loc + "\n" +
-                                day + " at " + time + "\n\n" ;
+                                day + " at " + time + "\n\n";
                     }
 
                     new AlertDialog.Builder(LoginTest.this)
@@ -287,7 +301,7 @@ public class LoginTest extends Activity {
                         editor.apply();
                     }
                 } else if (resultCode == RESULT_CANCELED) {
-                    mOutputText.setText("Account unspecified.");
+                    //mOutputText.setText("Account unspecified.");
                 }
                 break;
             case REQUEST_AUTHORIZATION:

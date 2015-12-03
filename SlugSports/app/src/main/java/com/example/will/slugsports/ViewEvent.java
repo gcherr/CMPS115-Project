@@ -171,7 +171,8 @@ public class ViewEvent extends AppCompatActivity {
                             ((event.getInt("minute") > 10) ? event.getInt("minute") : "0"+(event.getInt("minute"))) +
                             " " + event.getString("AM_PM");
 
-                    Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
+                    //
+                    //Toast.makeText(ViewEvent.this, "sport is " + sport, Toast.LENGTH_SHORT).show();
 
                     //works
                     //TextView chosenSport = (TextView) findViewById(R.id.chosenSport);

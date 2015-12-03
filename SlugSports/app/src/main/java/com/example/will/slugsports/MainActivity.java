@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
                         chosenCriteria = list2.get(position);
                         populateListView(locList, "Locations");
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-                        toast.show();
+                        //toast.show();
                         break;
                     case "Locations":
                         chosenLoc = list2.get(position);
@@ -137,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
                         chosenCriteria = chosenSp + " : " + list2.get(position);
                         //populateListView(dayList, "Days");
                         toast = Toast.makeText(MainActivity.this, list2.get(position), Toast.LENGTH_SHORT);
-                        toast.show();
+                        //toast.show();
 
                         DateDialog d = new DateDialog();
                         d.setLoc(chosenLoc);
@@ -172,10 +172,12 @@ public class MainActivity extends ActionBarActivity {
         spList.add("Football");
         spList.add("Frisbee Golf");
         spList.add("Futsal");
+        spList.add("Hockey");
         spList.add("Racket Ball");
         spList.add("Soccer");
         spList.add("Swimming");
         spList.add("Tennis");
+        spList.add("Track");
         spList.add("Weightlifting");
         spList.add("Other");
     }
