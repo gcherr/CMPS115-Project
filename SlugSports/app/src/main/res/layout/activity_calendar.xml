@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirm Selection"
+        android:background="@drawable/buttonshape2"
         android:id="@+id/calendarConfirmButton"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.20"

@@ -76,11 +76,14 @@
         android:layout_marginTop="32dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
         android:text="Join"
         android:id="@+id/joinGame"
         android:onClick="joinEvent"
+        android:background="@drawable/buttonshape2"
+        android:textSize="15sp"
+        android:textColor="#0537ff"
         android:layout_below="@+id/gameCreator"
         android:layout_alignRight="@+id/NumJoined"
         android:layout_alignEnd="@+id/NumJoined" />

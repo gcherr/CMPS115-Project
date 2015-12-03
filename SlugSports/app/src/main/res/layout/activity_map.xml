@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
 
     tools:context="com.example.will.slugsports.MapActivity"
-    android:background="#e5f6ff">
+    android:background="#ffffff">
 
     <Spinner
         android:layout_width="fill_parent"
