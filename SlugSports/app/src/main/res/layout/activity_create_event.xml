@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#d8d8d8">
+    android:background="#ffffff">
 
     <LinearLayout
         android:orientation="vertical"
@@ -28,7 +28,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            android:textColor="#e90808"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textSize="30dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -45,7 +49,10 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/enter_name"
                 android:id="@+id/textView9"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:textColor="#0367d2"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -69,13 +76,17 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/select_time"
                 android:id="@+id/textView10"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:textColor="#0367d2"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editText10"
-                android:focusable="false"/>
+                android:focusable="false"
+                android:textColor="#0367d2" />
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +104,10 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/event_name"
                 android:id="@+id/textView11"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:textColor="#0367d2"
+                android:typeface="serif"
+                android:textStyle="bold" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -117,7 +131,10 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/preferred_num"
                 android:id="@+id/textView12"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:textColor="#0367d2"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -141,7 +158,11 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/description"
                 android:id="@+id/textView13"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:textColor="#0367d2"
+                android:typeface="serif"
+                android:visibility="visible"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

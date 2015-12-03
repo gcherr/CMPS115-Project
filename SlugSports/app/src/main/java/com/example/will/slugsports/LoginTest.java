@@ -95,7 +95,7 @@ public class LoginTest extends Activity {
         activityLayout.setLayoutParams(lp);
         activityLayout.setOrientation(LinearLayout.VERTICAL);
         activityLayout.setPadding(16, 16, 16, 16);
-        activityLayout.setBackground(getResources().getDrawable(R.drawable.ic_launcher));
+        activityLayout.setBackground(getResources().getDrawable(R.drawable.posis_night));
 
         ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

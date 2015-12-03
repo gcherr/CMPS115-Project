@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.will.slugsports.LoginTest"
-    android:background="@drawable/ic_launcher">
+    android:background="@drawable/posis_night">
     <!--
     android:background="#e5f6ff"
     -->
