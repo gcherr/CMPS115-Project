@@ -16,7 +16,7 @@ From these equivalence classes we have the test set as 1.a X 2.b X 3.c X 4.d X 5
 
 1) (1.y X 2.y X 3.y X 4.y X 5.y) where a || b || c || d || e == 2;
 
-Expected output = The app will reject the input and tell the user to input valid information (fill in the blank fields)
+Expected output = The app will reject the input and tell the user to input valid information (fill in the blank fields).
 
 2) (1.y X 2.y X 3.y X 4.y X 5.y) where a && b && c && d && e == 1;
 
