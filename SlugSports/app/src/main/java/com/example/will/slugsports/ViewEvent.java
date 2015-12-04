@@ -110,6 +110,7 @@ public class ViewEvent extends AppCompatActivity {
                     if(!alreadyJoined) {
                         event.put("numJoined", event.getNumber("numJoined").intValue() + 1);
                         event.addAllUnique("usersAttending", Arrays.asList(App.getAcct()));
+                        joined.setText("Players joined:\n" + (event.getNumber("numJoined").intValue()) + "/" + pref);
                         joinButton.setText("Un-join");
                         Toast.makeText(ViewEvent.this, "Joined event", Toast.LENGTH_SHORT).show();
                     }
@@ -117,6 +118,7 @@ public class ViewEvent extends AppCompatActivity {
                     else{
                         event.put("numJoined", event.getNumber("numJoined").intValue() - 1);
                         event.removeAll("usersAttending", Arrays.asList(App.getAcct()));
+                        joined.setText("Players joined:\n" + (event.getNumber("numJoined").intValue()) + "/" + pref);
                         joinButton.setText("Join");
                         Toast.makeText(ViewEvent.this, "Unjoined event", Toast.LENGTH_SHORT).show();
                     }
