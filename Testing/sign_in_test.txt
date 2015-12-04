@@ -1,3 +1,9 @@
+Rahul Patel
+Product Name: Slug Sports
+Team Name: Slugs With Attitude (SWA)
+Method Test
+
+
 Module Sign In has two parameters: email address, which is a string and password, which is a string as well. The modules worst outcome is that the user is rejected from signing in because of one of two reasons 1) invalid email address or 2) invalid password. The Google API handles checking if the information the user entered is indeed correct and then grants the user access to continue. The user needs to have a valid gmail account because then they will have access to the OPERS calendar information and this allows us to identify the user so that we can personalize the account with their currently joined events. 
 
 The equivalence classes for the Sign In module are: 
